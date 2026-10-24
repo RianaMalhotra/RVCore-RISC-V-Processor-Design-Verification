@@ -30,7 +30,7 @@
 <text x="553" y="361" fill="#15803d">✓</text><text x="581" y="361">Milestone 1: 32-bit ALU — verified</text>
 <text x="553" y="392" fill="#15803d">✓</text><text x="581" y="392">Milestone 2: Register file — verified</text>
 <text x="553" y="423" fill="#15803d">✓</text><text x="581" y="423">Milestone 3: RV32I decoder — verified</text>
-<text x="553" y="454" fill="#b45309">◐</text><text x="581" y="454">Milestone 4: Datapath — CI pending</text>
+<text x="553" y="454" fill="#15803d">✓</text><text x="581" y="454">Milestone 4: Datapath verified</text>
 <text x="553" y="485">○</text><text x="581" y="485">Milestone 5: Coverage and DFT</text>
 </g>
 <path d="M40 552 H984" stroke="#e2e8f0"/>
@@ -38,7 +38,7 @@
 <rect x="40" y="619" width="457" height="365" rx="12" fill="#edfbf1" stroke="#d3ecd9"/>
 <rect x="512" y="619" width="472" height="365" rx="12" fill="#fff1f1" stroke="#f5d9d9"/>
 <text x="58" y="652" class="sub">Current Implementation</text>
-<text x="58" y="678" class="small">ALU and register file verified; decoder in CI</text>
+<text x="58" y="678" class="small">ALU, register file, decoder and datapath verified</text>
 <rect x="162" y="715" width="218" height="90" rx="9" fill="#dcecff" stroke="#4b79b5" stroke-width="2"/>
 <text x="271" y="750" font-size="20" font-weight="700" text-anchor="middle">32-bit ALU</text>
 <text x="271" y="778" class="small" text-anchor="middle">ADD · SUB · AND · OR · XOR</text>
