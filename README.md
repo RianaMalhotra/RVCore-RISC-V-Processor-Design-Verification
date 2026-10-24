@@ -1,6 +1,6 @@
 <p align="center"><img src="docs/images/readme-overview-v3.svg" alt="Updated RISC-V SoC architecture, milestone status, timing diagram, operation tables and verification flow" width="100%"></p>
 
-> **Visual overview:** Updated for the Milestone 4 datapath pull request (CI pending). The timing diagrams, operation tables, and verification flow remain included. [Original reference image](docs/images/reference.jpeg) is preserved. Detailed design explanations, tests, and setup instructions follow below.
+> **Visual overview:** Updated through the completed and CI-verified Milestone 4 datapath integration. The timing diagrams, operation tables, and verification flow remain included. [Original reference image](docs/images/reference.jpeg) is preserved. Detailed design explanations, tests, and setup instructions follow below.
 
 ---
 
@@ -26,7 +26,7 @@ This project is a hands-on exploration of **digital RTL design, processor archit
 | **Verification** | Directed + seeded randomized cocotb tests with Python reference models |
 | **Automation** | Verilator lint and simulation, GNU Make, GitHub Actions CI |
 | **Hardware required** | None—runs entirely in software |
-| **Current milestone** | Instruction decoder added on feature branch; CI validation pending |
+| **Current milestone** | Milestones 1–4 merged; arithmetic datapath CI verified |
 
 ## Architecture
 
@@ -156,7 +156,7 @@ riscv-soc-verification/
 - [x] **Milestone 2 — Register file:** Implement two-read/one-write 32-register storage and directed/randomized tests.
 - [x] **Verification infrastructure:** Configure Verilator lint, cocotb regression, and passing CI for the implemented modules.
 - [x] **Milestone 3 — RV32I decoder:** Implement and test a limited arithmetic instruction subset; additional instruction classes remain planned.
-- [ ] **Milestone 4 — CPU datapath:** Add program counter, connect blocks, and execute a small RV32I subset in simulation.
+- [x] **Milestone 4 — CPU datapath:** Add program counter, connect blocks, and execute a small RV32I subset in simulation.
 - [ ] **Milestone 5 — Verification depth:** Add assertions, functional coverage metrics, and integration-level regression.
 - [ ] **Milestone 6 — DFT/DFX exploration:** Prototype scan-chain and built-in self-test (BIST) mechanisms with fault-injection tests.
 
@@ -177,11 +177,11 @@ Follow progress through [GitHub Issues](https://github.com/RianaMalhotra/riscv-s
 
 Distributed under the [MIT License](LICENSE).
 
-## Milestone 4 — Single-cycle arithmetic datapath (feature branch)
+## Milestone 4 — Single-cycle arithmetic datapath (completed)
 
 The `cpu_datapath` top-level connects the existing **RV32I arithmetic-subset decoder → 32 × 32-bit register file → ALU → register writeback**. It adds a 32-bit program counter starting at zero and advancing by four bytes for each supported instruction. Unsupported instructions assert `illegal` and latch `halted`, freezing the PC and preventing subsequent writes until reset.
 
-**This is a CPU integration prototype, not a complete RV32I processor.** Instructions are supplied externally via a 32-bit input; instruction memory, branches, jumps, loads/stores, and data memory are not yet present. The original uploaded reference JPEG remains available in `docs/images/reference.jpeg`. The updated SVG overview above reflects this in-progress milestone while retaining timing and verification diagrams.
+**This is a CPU integration prototype, not a complete RV32I processor.** Instructions are supplied externally via a 32-bit input; instruction memory, branches, jumps, loads/stores, and data memory are not yet present. The original uploaded reference JPEG remains available in `docs/images/reference.jpeg`. The updated SVG overview above reflects the completed datapath milestone while retaining timing and verification diagrams.
 
 ```text
 External instruction[31:0]
