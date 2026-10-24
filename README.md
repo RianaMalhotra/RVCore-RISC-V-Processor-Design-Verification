@@ -1,3 +1,9 @@
+<p align="center"><img src="docs/images/readme-overview.svg" alt="RISC-V SoC Verification project overview: technology stack, completed milestones, implemented and planned architecture, and verification strategy" width="100%"></p>
+
+> **Visual overview:** The graphic summarizes current progress. Detailed design explanations, tests, and setup instructions follow below.
+
+---
+
 # RISC-V SoC Design & Verification
 
 [![RTL Verification](https://github.com/RianaMalhotra/riscv-soc-verification/actions/workflows/rtl-ci.yml/badge.svg)](https://github.com/RianaMalhotra/riscv-soc-verification/actions/workflows/rtl-ci.yml)
