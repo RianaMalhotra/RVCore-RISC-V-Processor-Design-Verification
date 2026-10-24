@@ -2,8 +2,8 @@ SIM ?= verilator
 TOPLEVEL_LANG ?= verilog
 export PYTHONPATH := $(abspath verification/cocotb):$(PYTHONPATH)
 
-.PHONY: test test-alu test-register-file test-decoder test-cpu test-system lint
-test: test-alu test-register-file test-decoder test-cpu test-system
+.PHONY: test test-alu test-register-file test-decoder test-cpu test-system test-control-flow test-control-system lint
+test: test-alu test-register-file test-decoder test-cpu test-system test-control-flow test-control-system
 
 test-alu:
 	$(MAKE) -f $(shell cocotb-config --makefiles)/Makefile.sim SIM=$(SIM) TOPLEVEL_LANG=$(TOPLEVEL_LANG) VERILOG_SOURCES="$(abspath rtl/core/alu.sv)" TOPLEVEL=alu COCOTB_TEST_MODULES=test_alu SIM_BUILD=sim_build/alu
@@ -20,9 +20,17 @@ test-cpu:
 test-system:
 	$(MAKE) -f $(shell cocotb-config --makefiles)/Makefile.sim SIM=$(SIM) TOPLEVEL_LANG=$(TOPLEVEL_LANG) VERILOG_SOURCES="$(abspath rtl/core/alu.sv) $(abspath rtl/core/register_file.sv) $(abspath rtl/core/instruction_decoder.sv) $(abspath rtl/core/cpu_datapath.sv) $(abspath rtl/core/instruction_memory.sv) $(abspath rtl/core/cpu_system.sv)" TOPLEVEL=cpu_system COCOTB_TEST_MODULES=test_cpu_system SIM_BUILD=sim_build/system
 
+test-control-flow:
+	$(MAKE) -f $(shell cocotb-config --makefiles)/Makefile.sim SIM=$(SIM) TOPLEVEL_LANG=$(TOPLEVEL_LANG) VERILOG_SOURCES="$(abspath rtl/core/cpu_control_flow.sv)" TOPLEVEL=cpu_control_flow COCOTB_TEST_MODULES=test_cpu_control_flow SIM_BUILD=sim_build/control_flow
+
+test-control-system:
+	$(MAKE) -f $(shell cocotb-config --makefiles)/Makefile.sim SIM=$(SIM) TOPLEVEL_LANG=$(TOPLEVEL_LANG) VERILOG_SOURCES="$(abspath rtl/core/alu.sv) $(abspath rtl/core/register_file.sv) $(abspath rtl/core/instruction_decoder.sv) $(abspath rtl/core/instruction_memory.sv) $(abspath rtl/core/cpu_control_flow.sv) $(abspath rtl/core/cpu_system_control.sv)" TOPLEVEL=cpu_system_control COCOTB_TEST_MODULES=test_cpu_system_control SIM_BUILD=sim_build/control_system
+
 lint:
 	verilator --lint-only -Wall -Wno-fatal rtl/core/alu.sv
 	verilator --lint-only -Wall -Wno-fatal rtl/core/register_file.sv
 	verilator --lint-only -Wall -Wno-fatal rtl/core/instruction_decoder.sv
 	verilator --lint-only -Wall -Wno-fatal --top-module cpu_datapath rtl/core/alu.sv rtl/core/register_file.sv rtl/core/instruction_decoder.sv rtl/core/cpu_datapath.sv
 	verilator --lint-only -Wall -Wno-fatal --top-module cpu_system rtl/core/alu.sv rtl/core/register_file.sv rtl/core/instruction_decoder.sv rtl/core/cpu_datapath.sv rtl/core/instruction_memory.sv rtl/core/cpu_system.sv
+	verilator --lint-only -Wall -Wno-fatal --top-module cpu_control_flow rtl/core/cpu_control_flow.sv
+	verilator --lint-only -Wall -Wno-fatal --top-module cpu_system_control rtl/core/alu.sv rtl/core/register_file.sv rtl/core/instruction_decoder.sv rtl/core/instruction_memory.sv rtl/core/cpu_control_flow.sv rtl/core/cpu_system_control.sv
