@@ -10,8 +10,11 @@ The register file contains 32 32-bit registers (x0–x31), two asynchronous read
 
 This reset behavior is a project design choice, not a requirement of the RV32I ISA. The register file is not yet connected to the ALU or a CPU.
 
+### RV32I arithmetic instruction decoder
+The combinational `instruction_decoder` handles R-type ADD, SUB, AND, OR, XOR and I-type ADDI, ANDI, ORI, XORI. It extracts rs1, rs2, rd, sign-extends bits [31:20], and emits `alu_op`, `use_imm`, `reg_write`, and `illegal`. Unsupported instructions are flagged illegal and do not enable register writes. `rs2` on I-type is a raw instruction bit-field, not an architectural source operand. No datapath integration is implemented yet.
+
 ## Planned
-- RV32I instruction decoder, program counter and control
+- Complete RV32I instruction coverage, program counter and remaining control
 - Integrated CPU datapath and instruction/data memory interfaces
 - Functional coverage, assertions, scan-chain and built-in self-test experiments
 
