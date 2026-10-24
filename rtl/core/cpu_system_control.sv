@@ -34,7 +34,7 @@ module cpu_system_control #(
         .link(link), .offset(offset), .jalr(jalr)
     );
     assign illegal = control_flow ? !cf_legal : decode_illegal;
-    assign effective_write = !halted && !illegal && (reg_write || link);
+    assign effective_write = !halted && !illegal && !(control_flow && taken && next_pc[1:0] != 2'b00) && (reg_write || link);
     assign write_data = link ? pc + 32'd4 : alu_result;
     register_file rf (
         .clk(clk), .rst(rst), .we(effective_write),
