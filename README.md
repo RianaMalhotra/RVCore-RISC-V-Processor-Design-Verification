@@ -28,48 +28,13 @@ This project is a hands-on exploration of **digital RTL design, processor archit
 
 The two blocks below **exist in the repository today**. The dotted line is a *conceptual future datapath connection*, **not a connection implemented in RTL**.
 
-```mermaid
-flowchart LR
-    subgraph RF["Implemented: 32 × 32-bit Register File"]
-        R["x0–x31 storage<br/>x0 always reads 0"]
-        RP["Two asynchronous read ports<br/>rs1 → rd1; rs2 → rd2"]
-        WP["One synchronous write port<br/>we, rd, wd, clk"]
-        R --> RP
-        WP --> R
-    end
-    subgraph ALU["Implemented: 32-bit ALU"]
-        A["Operands a, b<br/>3-bit operation selector"]
-        O["ADD / SUB / AND / OR / XOR"]
-        Z["32-bit result + zero flag"]
-        A --> O --> Z
-    end
-    RP -. "Planned integration: rd1/rd2 → a/b" .-> A
-    Z -. "Planned writeback path" .-> WP
-    classDef implemented fill:#e8f5ed,stroke:#26734d,color:#173e2c
-    class R,RP,WP,A,O,Z implemented
-```
+![Implemented ALU and register file blocks](docs/images/implemented-blocks.svg)
 
 **How the pieces will eventually work together:** An instruction will select two source registers. Their values will feed the ALU, which computes a result. Control logic will decide whether that result is written back to a destination register. **Instruction decoding, control, and these interconnections have not been implemented yet.**
 
 ### 2. Planned processor architecture (future work)
 
-```mermaid
-flowchart TD
-    IM["Instruction memory"] --> DEC["RV32I instruction decoder<br/>(planned)"]
-    PC["Program counter<br/>(planned)"] --> IM
-    DEC --> CTRL["Control + immediate generation<br/>(planned)"]
-    DEC --> RF["Register file<br/>(implemented standalone)"]
-    RF --> ALU["32-bit ALU<br/>(implemented standalone)"]
-    CTRL --> ALU
-    ALU --> DM["Data memory interface<br/>(planned)"]
-    ALU -. "Writeback (planned)" .-> RF
-    CTRL --> PC
-    DM -. "Load data (planned)" .-> RF
-    classDef existing fill:#e8f5ed,stroke:#26734d,color:#173e2c
-    classDef planned fill:#f3f4f6,stroke:#818a96,color:#28313d,stroke-dasharray:5 4
-    class RF,ALU existing
-    class IM,PC,DEC,CTRL,DM planned
-```
+![Conceptual future RV32I CPU datapath](docs/images/planned-cpu.svg)
 
 The planned diagram is **architectural intent**, not a claim that instructions can currently execute.
 
@@ -108,17 +73,7 @@ The `zero` output is asserted whenever `result == 0`. The three-bit `op` values 
 
 Rather than relying on visual waveform inspection alone, each module is tested by a **Python reference model** that independently computes the expected output and compares it to the simulated RTL.
 
-```mermaid
-flowchart LR
-    T["Directed + seeded<br/>randomized test vectors"] --> SIM["Verilator simulates<br/>SystemVerilog RTL"]
-    T --> REF["Python reference<br/>model"]
-    SIM --> COMP["cocotb assertions:<br/>actual vs expected"]
-    REF --> COMP
-    COMP --> RESULT["Pass / fail"]
-    CI["GitHub Actions CI"] --> LINT["Verilator RTL lint"]
-    CI --> T
-    LINT --> RESULT
-```
+![Automated cocotb and Verilator verification flow](docs/images/verification-flow.svg)
 
 | Module | Verification performed |
 | --- | --- |
