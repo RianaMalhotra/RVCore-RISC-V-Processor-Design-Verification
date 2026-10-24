@@ -1,6 +1,6 @@
 <p align="center"><img src="docs/images/readme-overview-v3.svg" alt="Updated RISC-V SoC architecture, milestone status, timing diagram, operation tables and verification flow" width="100%"></p>
 
-> **Visual overview:** Updated through the completed and CI-verified Milestone 4 datapath integration. The timing diagrams, operation tables, and verification flow remain included. [Original reference image](docs/images/reference.jpeg) is preserved. Detailed design explanations, tests, and setup instructions follow below.
+> **Visual overview:** Updated through the completed and CI-verified Milestone 5 instruction-fetch integration. The timing diagrams, operation tables, and verification flow remain included. [Original reference image](docs/images/reference.jpeg) is preserved. Detailed design explanations, tests, and setup instructions follow below.
 
 ---
 
@@ -26,7 +26,7 @@ This project is a hands-on exploration of **digital RTL design, processor archit
 | **Verification** | Directed + seeded randomized cocotb tests with Python reference models |
 | **Automation** | Verilator lint and simulation, GNU Make, GitHub Actions CI |
 | **Hardware required** | None—runs entirely in software |
-| **Current milestone** | Milestones 1–4 merged; arithmetic datapath CI verified |
+| **Current milestone** | Milestones 1–5 verified; instruction-fetch PR ready to merge |
 
 ## Architecture
 
@@ -157,7 +157,8 @@ riscv-soc-verification/
 - [x] **Verification infrastructure:** Configure Verilator lint, cocotb regression, and passing CI for the implemented modules.
 - [x] **Milestone 3 — RV32I decoder:** Implement and test a limited arithmetic instruction subset; additional instruction classes remain planned.
 - [x] **Milestone 4 — CPU datapath:** Add program counter, connect blocks, and execute a small RV32I subset in simulation.
-- [ ] **Milestone 5 — Verification depth:** Add assertions, functional coverage metrics, and integration-level regression.
+- [x] **Milestone 5 — Instruction memory and automatic fetch:** Load a hex program and execute arithmetic instructions from PC-addressed memory.
+- [ ] **Next — Verification depth:** Add assertions, functional coverage metrics, and integration-level regression.
 - [ ] **Milestone 6 — DFT/DFX exploration:** Prototype scan-chain and built-in self-test (BIST) mechanisms with fault-injection tests.
 
 Follow progress through [GitHub Issues](https://github.com/RianaMalhotra/riscv-soc-verification/issues) and [Actions](https://github.com/RianaMalhotra/riscv-soc-verification/actions).
@@ -181,7 +182,7 @@ Distributed under the [MIT License](LICENSE).
 
 The `cpu_datapath` top-level connects the existing **RV32I arithmetic-subset decoder → 32 × 32-bit register file → ALU → register writeback**. It adds a 32-bit program counter starting at zero and advancing by four bytes for each supported instruction. Unsupported instructions assert `illegal` and latch `halted`, freezing the PC and preventing subsequent writes until reset.
 
-**This is a CPU integration prototype, not a complete RV32I processor.** Instructions are supplied externally via a 32-bit input; instruction memory, branches, jumps, loads/stores, and data memory are not yet present. The original uploaded reference JPEG remains available in `docs/images/reference.jpeg`. The updated SVG overview above reflects the completed datapath milestone while retaining timing and verification diagrams.
+**This is a CPU integration prototype, not a complete RV32I processor.** The standalone `cpu_datapath` accepts externally supplied instructions; Milestone 5 adds instruction memory through `cpu_system`. Branches, jumps, loads/stores, and data memory are not yet present. The original uploaded reference JPEG remains available in `docs/images/reference.jpeg`. The updated SVG overview above reflects the completed datapath milestone while retaining timing and verification diagrams.
 
 ```text
 External instruction[31:0]
@@ -200,7 +201,7 @@ External instruction[31:0]
 
 Run `make test-cpu` for the end-to-end arithmetic program, register writeback, x0, illegal-instruction halt and reset checks. `make test` now includes the CPU suite. **CI results must pass before merging this milestone.**
 
-## Milestone 5 — Instruction memory and automatic fetch (PR; CI pending)
+## Milestone 5 — Instruction memory and automatic fetch (CI verified)
 
 The new `cpu_system` top level connects a 64-word, read-only `instruction_memory` to the Milestone 4 arithmetic datapath. The PC is a **byte address**; the instruction memory uses `PC >> 2` to fetch 32-bit aligned words from `programs/arithmetic.hex`. An invalid or unaligned fetch returns an illegal zero word and halts the core.
 
