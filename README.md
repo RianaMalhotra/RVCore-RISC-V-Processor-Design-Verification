@@ -199,3 +199,11 @@ External instruction[31:0]
 ```
 
 Run `make test-cpu` for the end-to-end arithmetic program, register writeback, x0, illegal-instruction halt and reset checks. `make test` now includes the CPU suite. **CI results must pass before merging this milestone.**
+
+## Milestone 5 — Instruction memory and automatic fetch (PR; CI pending)
+
+The new `cpu_system` top level connects a 64-word, read-only `instruction_memory` to the Milestone 4 arithmetic datapath. The PC is a **byte address**; the instruction memory uses `PC >> 2` to fetch 32-bit aligned words from `programs/arithmetic.hex`. An invalid or unaligned fetch returns an illegal zero word and halts the core.
+
+The example program executes eight arithmetic instructions, writes results into registers, and stops on a zero-word sentinel. The cocotb system test verifies each fetched instruction's ALU result, sequential PC updates, halt behavior, and reset replay. Run `make test-system` or `make test` (all suites). The CI workflow already invokes `make test` and `make lint`, so the new suite is automatically included.
+
+**Limits:** This is still an arithmetic-subset prototype, not a full RV32I processor. There is no branch/jump control flow, load/store, data memory, external bus, or interrupt support. The memory image is loaded for simulation with `$readmemh`.
