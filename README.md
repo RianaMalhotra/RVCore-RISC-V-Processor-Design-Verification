@@ -1,123 +1,21 @@
-# RISC-V SoC Verification
+<p align="center"><img src="docs/images/readme-overview-v3.svg" alt="RISC-V SoC Verification project overview: technology stack, completed milestones, implemented and planned architecture, and verification strategy" width="100%"></p>
 
-*A from-scratch RISC-V processor in SystemVerilog with cocotb verification — under development.*
+> **Visual overview:** The graphic summarizes current progress. Detailed design explanations, tests, and setup instructions follow below.
+
+---
+
+# RISC-V SoC Design & Verification
 
 [![RTL Verification](https://github.com/RianaMalhotra/riscv-soc-verification/actions/workflows/rtl-ci.yml/badge.svg)](https://github.com/RianaMalhotra/riscv-soc-verification/actions/workflows/rtl-ci.yml)
-![SystemVerilog](https://img.shields.io/badge/SystemVerilog-RTL-e5e7eb)
-![Python](https://img.shields.io/badge/Python-Tests-e5e7eb)
-![cocotb](https://img.shields.io/badge/cocotb-Verification-e5e7eb)
-![Verilator](https://img.shields.io/badge/Verilator-Simulation-e5e7eb)
-![Ubuntu CI](https://img.shields.io/badge/Ubuntu-CI-e5e7eb)
+![SystemVerilog](https://img.shields.io/badge/RTL-SystemVerilog-445a83)
+![Verification](https://img.shields.io/badge/Verification-cocotb%20%2B%20Verilator-326d64)
 ![License](https://img.shields.io/badge/License-MIT-blue)
 
-This project incrementally implements and verifies an RV32I-based processor using SystemVerilog and Python-based cocotb tests. **The ALU, register file, and arithmetic-subset decoder are implemented and independently verified; a complete CPU and SoC are not yet implemented.** The goal is a modular, well-tested design with reproducible automated verification.
+**Building and verifying the hardware building blocks of a 32-bit RISC-V processor—entirely in simulation.**
 
----
+This project is a hands-on exploration of **digital RTL design, processor architecture, and hardware verification**. I implement synthesizable hardware modules in SystemVerilog, test their behavior against Python reference models with cocotb, and run automated regressions through GitHub Actions. The longer-term goal is a small RV32I-based CPU followed by design-for-test (DFT) experiments.
 
-## 1. Project Overview
-
-<table>
-<tr><td width="51%" valign="top">
-
-This repository develops a 32-bit RISC-V CPU and eventually a small SoC, entirely in simulation. Work is organized into milestones, starting with independent RTL blocks before CPU integration.
-
-The focus is clean hardware design, directed and randomized cocotb verification, and continuous integration with GitHub Actions.
-
-</td><td valign="top">
-
-**Current Status**
-
-- [x] **Milestone 1:** 32-bit ALU — implemented and verified
-- [x] **Milestone 2:** 32 × 32-bit register file — implemented and verified
-- [x] **Milestone 3:** RV32I arithmetic instruction decoder — implemented and verified
-- [ ] **Milestone 4:** CPU datapath integration
-- [ ] **Milestone 5:** Control and hazard handling (if needed)
-- [ ] **Milestone 6:** Instruction and data memory
-- [ ] **Milestone 7:** Top-level SoC and executable test programs
-
-</td></tr>
-</table>
-
-## 2. Architecture
-
-<table>
-<tr><th width="50%">Current Implementation (Individual Modules)</th><th>Planned CPU Datapath (Conceptual)</th></tr>
-<tr><td valign="top">
-
-Three RTL modules exist and are verified **independently**.
-
-<img src="docs/images/implemented-blocks.svg" alt="Implemented ALU and register file interfaces" width="100%">
-
-**Instruction decoder:** 32-bit instruction → register indices, sign-extended immediate, ALU operation, write enable, and illegal-instruction flag.
-
-</td><td valign="top">
-
-The planned datapath is **not yet integrated or executing instructions**.
-
-<img src="docs/images/planned-cpu.svg" alt="Planned RV32I CPU datapath" width="100%">
-
-Program counter → instruction memory → decoder → register file → ALU → memory/writeback. Interconnections are conceptual.
-
-</td></tr>
-</table>
-
-## 3. How It Works
-
-### ALU
-
-The combinational 32-bit ALU supports the following operations. Its `zero` output is asserted when the result is zero.
-
-| `op` | Operation | Description |
-|:---:|---|---|
-| `000` | ADD | `a + b` |
-| `001` | SUB | `a - b` |
-| `010` | AND | `a & b` |
-| `011` | OR | `a \| b` |
-| `100` | XOR | `a ^ b` |
-
-### Register File
-
-The 32 × 32-bit register file has two asynchronous read ports and one synchronous write port. Writes occur on a rising clock edge when enabled. Register `x0` always reads zero and ignores writes.
-
-**Illustrative timing diagram (not a captured simulator trace):**
-
-![Register file timing: clock, write enable, register address and read data](docs/images/register-file-timing.svg)
-
-### RV32I Instruction Decoder
-
-The combinational decoder extracts register addresses and sign-extends the I-type immediate. It generates ALU control, immediate selection, register write enable and an `illegal` signal.
-
-| Instruction | Type | `alu_op` | Description |
-|---|:---:|:---:|---|
-| ADD | R | `000` | `rd = rs1 + rs2` |
-| SUB | R | `001` | `rd = rs1 - rs2` |
-| AND | R | `010` | `rd = rs1 & rs2` |
-| OR | R | `011` | `rd = rs1 \| rs2` |
-| XOR | R | `100` | `rd = rs1 ^ rs2` |
-| ADDI | I | `000` | `rd = rs1 + imm` |
-| ANDI | I | `010` | `rd = rs1 & imm` |
-| ORI | I | `011` | `rd = rs1 \| imm` |
-| XORI | I | `100` | `rd = rs1 ^ imm` |
-
-Unsupported encodings assert `illegal` and disable register writes. Loads, stores, branches, jumps, shifts and full RV32I execution remain future work.
-
-## 4. Verification Strategy
-
-We use cocotb to drive hardware inputs and compare results against Python reference behavior, with Verilator providing RTL simulation. GitHub Actions runs automated lint and regression checks.
-
-**Verification flow**
-
-![SystemVerilog RTL and cocotb test vectors evaluated with Verilator and compared against expected results in GitHub CI](docs/images/verification-flow.svg)
-
-- Directed and seeded randomized tests for ALU, register file, and decoder
-- Register file reset, read/write, timing, and immutable-`x0` checks
-- Decoder valid/invalid encoding and immediate sign-extension checks
-- GitHub Actions regression on pushes and pull requests
-- Functional coverage metrics and additional assertions are **planned**, not currently claimed
-
----
-
-## Detailed Engineering Documentation
+> **Current scope:** The **32-bit ALU**, **32 × 32-bit register file**, and **limited RV32I arithmetic decoder** are implemented as **independently tested modules**. They are **not yet wired into a CPU or a functioning SoC**. The diagrams distinguish implemented behavior from the planned processor.
 
 ## At a glance
 
@@ -128,17 +26,17 @@ We use cocotb to drive hardware inputs and compare results against Python refere
 | **Verification** | Directed + seeded randomized cocotb tests with Python reference models |
 | **Automation** | Verilator lint and simulation, GNU Make, GitHub Actions CI |
 | **Hardware required** | None—runs entirely in software |
-| **Current milestone** | Instruction decoder merged and verified; CPU integration next |
+| **Current milestone** | Instruction decoder added on feature branch; CI validation pending |
 
 ## Architecture
 
 ### 1. Implemented modules and their interfaces
 
-The ALU and register file shown below exist in the repository today, alongside the independently verified arithmetic-subset decoder. The dotted line is a *conceptual future datapath connection*, **not a connection implemented in RTL**.
+The two blocks below **exist in the repository today**. The dotted line is a *conceptual future datapath connection*, **not a connection implemented in RTL**.
 
 ![Implemented ALU and register file blocks](docs/images/implemented-blocks.svg)
 
-**How the pieces will eventually work together:** An instruction will select two source registers. Their values will feed the ALU, which computes a result. Control logic will decide whether that result is written back to a destination register. **Instruction decoding for nine arithmetic instructions is implemented independently; control integration and datapath interconnections have not been implemented yet.**
+**How the pieces will eventually work together:** An instruction will select two source registers. Their values will feed the ALU, which computes a result. Control logic will decide whether that result is written back to a destination register. **Instruction decoding, control, and these interconnections have not been implemented yet.**
 
 ### 2. Planned processor architecture (future work)
 
@@ -193,7 +91,7 @@ Rather than relying on visual waveform inspection alone, each module is tested b
 | **Register file** | Reset, immutable `x0`, `x1`/`x31` boundaries, two independent reads, write enable, edge timing, overwrite, reset priority |
 | **Decoder** | Directed and seeded randomized valid R/I instruction encodings, sign extension, register indices, control outputs, and rejection of unsupported encodings |
 | **Register file randomized** | 500 seeded transactions against a software register model, then a 32 × 32 exhaustive read-address sweep |
-| **CI** | RTL lint followed by all three cocotb suites on pushes and pull requests |
+| **CI** | RTL lint followed by both cocotb suites on pushes and pull requests |
 
 A passing GitHub Actions run demonstrates that **these particular checks passed for that commit**; it does **not** establish full ISA compliance, measured functional coverage, or silicon readiness. See [the verification plan](docs/verification_plan.md) for details.
 
@@ -222,8 +120,8 @@ python3 -m venv .venv
 source .venv/bin/activate
 python -m pip install -r requirements.txt
 
-make lint                # Lint all three SystemVerilog modules
-make test                # Run ALU, register-file, and decoder tests
+make lint                # Lint both SystemVerilog modules
+make test                # Run ALU + register-file tests
 make test-alu            # Run only ALU tests
 make test-register-file  # Run only register-file tests
 make test-decoder        # Run only decoder tests
