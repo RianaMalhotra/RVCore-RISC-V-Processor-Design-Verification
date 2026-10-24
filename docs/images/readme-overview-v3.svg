@@ -29,7 +29,7 @@
 <g class="small">
 <text x="553" y="361" fill="#15803d">✓</text><text x="581" y="361">Milestone 1: 32-bit ALU — verified</text>
 <text x="553" y="392" fill="#15803d">✓</text><text x="581" y="392">Milestone 2: Register file — verified</text>
-<text x="553" y="423" fill="#15803d">✓</text><text x="581" y="423">Milestone 3: RV32I decoder — tests pending</text>
+<text x="553" y="423" fill="#15803d">✓</text><text x="581" y="423">Milestone 3: RV32I decoder — verified</text>
 <text x="553" y="454">○</text><text x="581" y="454">Milestone 4: CPU integration</text>
 <text x="553" y="485">○</text><text x="581" y="485">Milestone 5: Coverage and DFT</text>
 </g>
