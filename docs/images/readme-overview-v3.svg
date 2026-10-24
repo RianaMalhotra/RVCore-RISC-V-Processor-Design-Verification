@@ -13,7 +13,7 @@
 <rect x="758" y="111" width="96" height="32" rx="6" fill="#dcfce7"/><text x="770" y="133" fill="#166534">✓ Passing</text>
 </g>
 <text x="40" y="180" class="body">Building a 32-bit RISC-V processor incrementally from verified hardware blocks.</text>
-<text x="40" y="207" class="body">Verified: arithmetic CPU and instruction fetch; branches/jumps in CI.</text>
+<text x="40" y="207" class="body">Verified: arithmetic CPU, instruction fetch, branches and jumps.</text>
 <path d="M40 230 H984" stroke="#e2e8f0"/>
 <text x="40" y="276" class="heading">1. Project Overview</text>
 <g class="body">
@@ -21,7 +21,7 @@
 <text x="40" y="340">using SystemVerilog, Verilator, and cocotb.</text>
 <text x="40" y="367">Each module is independently tested using</text>
 <text x="40" y="394">directed and seeded randomized scenarios.</text>
-<text x="40" y="435">Milestone 6: branch and jump control flow — CI pending</text>
+<text x="40" y="435">Milestone 6 verified: conditional branches, jumps and loops</text>
 <text x="40" y="462">and later explore DFT/DFX techniques.</text>
 </g>
 <rect x="530" y="292" width="454" height="235" rx="12" fill="#edf5ff" stroke="#dbeafe"/>
@@ -32,7 +32,7 @@
 <text x="553" y="423" fill="#15803d">✓</text><text x="581" y="423">Milestone 3: RV32I decoder — verified</text>
 <text x="553" y="454" fill="#15803d">✓</text><text x="581" y="454">Milestone 4: Datapath verified</text>
 <text x="553" y="485" fill="#15803d">✓</text><text x="581" y="485">Milestone 5: Instruction fetch verified</text>
-<text x="553" y="516" fill="#b45309">◐</text><text x="581" y="516">Milestone 6: Branches/jumps — CI pending</text>
+<text x="553" y="516" fill="#15803d">✓</text><text x="581" y="516">Milestone 6: Branches/jumps verified</text>
 </g>
 <path d="M40 552 H984" stroke="#e2e8f0"/>
 <text x="40" y="597" class="heading">2. Architecture</text>
