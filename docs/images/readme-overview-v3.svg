@@ -21,7 +21,7 @@
 <text x="40" y="340">using SystemVerilog, Verilator, and cocotb.</text>
 <text x="40" y="367">Each module is independently tested using</text>
 <text x="40" y="394">directed and seeded randomized scenarios.</text>
-<text x="40" y="435">Next: integrate an RV32I arithmetic-subset CPU</text>
+<text x="40" y="435">Next: verify arithmetic datapath and add instruction memory</text>
 <text x="40" y="462">and later explore DFT/DFX techniques.</text>
 </g>
 <rect x="530" y="292" width="454" height="235" rx="12" fill="#edf5ff" stroke="#dbeafe"/>
@@ -30,7 +30,7 @@
 <text x="553" y="361" fill="#15803d">✓</text><text x="581" y="361">Milestone 1: 32-bit ALU — verified</text>
 <text x="553" y="392" fill="#15803d">✓</text><text x="581" y="392">Milestone 2: Register file — verified</text>
 <text x="553" y="423" fill="#15803d">✓</text><text x="581" y="423">Milestone 3: RV32I decoder — verified</text>
-<text x="553" y="454">○</text><text x="581" y="454">Milestone 4: CPU integration</text>
+<text x="553" y="454" fill="#b45309">◐</text><text x="581" y="454">Milestone 4: Datapath — CI pending</text>
 <text x="553" y="485">○</text><text x="581" y="485">Milestone 5: Coverage and DFT</text>
 </g>
 <path d="M40 552 H984" stroke="#e2e8f0"/>
@@ -202,4 +202,4 @@
 <rect x="749" y="1926" width="218" height="65" rx="10" fill="#e0f7e8" stroke="#afbfcc"/>
 <text x="761" y="1951" font-family="Arial,Helvetica,sans-serif" font-size="15" font-weight="700" fill="#17243a">GitHub Actions</text>
 <text x="761" y="1975" font-family="Arial,Helvetica,sans-serif" font-size="13" font-weight="400" fill="#17243a">Regression results</text>
-<text x="40" y="2030" font-family="Arial,Helvetica,sans-serif" font-size="13" font-weight="400" fill="#17243a">Architecture links remain conceptual until the CPU datapath is integrated.</text></svg>
+<text x="40" y="2030" font-family="Arial,Helvetica,sans-serif" font-size="13" font-weight="400" fill="#17243a">Arithmetic datapath wired; instruction/data memory and branches remain planned.</text></svg>
