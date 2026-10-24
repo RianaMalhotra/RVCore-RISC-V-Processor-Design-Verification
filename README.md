@@ -15,18 +15,18 @@
 
 This project is a hands-on exploration of **digital RTL design, processor architecture, and hardware verification**. I implement synthesizable hardware modules in SystemVerilog, test their behavior against Python reference models with cocotb, and run automated regressions through GitHub Actions. The longer-term goal is a small RV32I-based CPU followed by design-for-test (DFT) experiments.
 
-> **Current scope:** The **32-bit ALU** and **32 × 32-bit register file** are implemented as **independently tested modules**. They are **not yet wired into a CPU or a functioning SoC**. The diagrams distinguish implemented behavior from the planned processor.
+> **Current scope:** The **32-bit ALU**, **32 × 32-bit register file**, and **limited RV32I arithmetic decoder** are implemented as **independently tested modules**. They are **not yet wired into a CPU or a functioning SoC**. The diagrams distinguish implemented behavior from the planned processor.
 
 ## At a glance
 
 | | |
 | --- | --- |
 | **Focus** | RTL design, digital verification, RISC-V fundamentals, future DFT/DFX exploration |
-| **Implemented hardware** | 32-bit combinational ALU; 32-register, dual-read/single-write register file |
+| **Implemented hardware** | 32-bit ALU; 32-register file; RV32I arithmetic-subset decoder |
 | **Verification** | Directed + seeded randomized cocotb tests with Python reference models |
 | **Automation** | Verilator lint and simulation, GNU Make, GitHub Actions CI |
 | **Hardware required** | None—runs entirely in software |
-| **Current milestone** | ALU and register-file modules merged; instruction decoder next |
+| **Current milestone** | Instruction decoder added on feature branch; CI validation pending |
 
 ## Architecture
 
@@ -75,6 +75,10 @@ The `zero` output is asserted whenever `result == 0`. The three-bit `op` values 
 
 **Example:** Write `0x12345678` to `x1` with `we = 1`; after the next rising edge, selecting `rs1 = 1` returns `0x12345678`. Selecting `rs2 = 0` still returns zero.
 
+### Instruction decoder (Milestone 3)
+
+[`rtl/core/instruction_decoder.sv`](rtl/core/instruction_decoder.sv) decodes a **limited RV32I arithmetic subset**: R-type `ADD`, `SUB`, `AND`, `OR`, `XOR` and I-type `ADDI`, `ANDI`, `ORI`, `XORI`. It extracts register indices, sign-extends the I-immediate, and emits ALU operation, immediate-select, register-write and illegal-instruction signals. Unsupported encodings assert `illegal` and disable writes. **Loads, stores, branches, jumps, shifts and a complete CPU remain unimplemented.**
+
 ## Verification: how correctness is checked
 
 Rather than relying on visual waveform inspection alone, each module is tested by a **Python reference model** that independently computes the expected output and compares it to the simulated RTL.
@@ -85,6 +89,7 @@ Rather than relying on visual waveform inspection alone, each module is tested b
 | --- | --- |
 | **ALU** | All 8 selector values, boundary operands, 200 deterministic random operand pairs, output and zero-flag comparisons |
 | **Register file** | Reset, immutable `x0`, `x1`/`x31` boundaries, two independent reads, write enable, edge timing, overwrite, reset priority |
+| **Decoder** | Directed and seeded randomized valid R/I instruction encodings, sign extension, register indices, control outputs, and rejection of unsupported encodings |
 | **Register file randomized** | 500 seeded transactions against a software register model, then a 32 × 32 exhaustive read-address sweep |
 | **CI** | RTL lint followed by both cocotb suites on pushes and pull requests |
 
@@ -119,6 +124,7 @@ make lint                # Lint both SystemVerilog modules
 make test                # Run ALU + register-file tests
 make test-alu            # Run only ALU tests
 make test-register-file  # Run only register-file tests
+make test-decoder        # Run only decoder tests
 ```
 
 No FPGA, development board, or other physical hardware is needed.
@@ -130,10 +136,12 @@ riscv-soc-verification/
 ├── .github/workflows/rtl-ci.yml    # Automated lint and regression
 ├── rtl/core/
 │   ├── alu.sv                      # 32-bit combinational ALU
-│   └── register_file.sv            # 32 × 32-bit register file
+│   ├── register_file.sv            # 32 × 32-bit register file
+│   └── instruction_decoder.sv     # RV32I arithmetic subset decoder
 ├── verification/cocotb/
 │   ├── test_alu.py                 # ALU directed/random tests
-│   └── test_register_file.py       # Register-file tests
+│   ├── test_register_file.py       # Register-file tests
+│   └── test_instruction_decoder.py # Decoder tests
 ├── docs/
 │   ├── architecture.md             # Detailed design notes
 │   └── verification_plan.md        # Test coverage by behavior
@@ -147,7 +155,7 @@ riscv-soc-verification/
 - [x] **Milestone 1 — ALU:** Implement 32-bit arithmetic/logic and Python verification.
 - [x] **Milestone 2 — Register file:** Implement two-read/one-write 32-register storage and directed/randomized tests.
 - [x] **Verification infrastructure:** Configure Verilator lint, cocotb regression, and passing CI for the implemented modules.
-- [ ] **Milestone 3 — RV32I decoder:** Decode supported instructions, generate immediates and control signals, and verify illegal cases.
+- [x] **Milestone 3 — RV32I decoder:** Implement and test a limited arithmetic instruction subset; additional instruction classes remain planned.
 - [ ] **Milestone 4 — CPU datapath:** Add program counter, connect blocks, and execute a small RV32I subset in simulation.
 - [ ] **Milestone 5 — Verification depth:** Add assertions, functional coverage metrics, and integration-level regression.
 - [ ] **Milestone 6 — DFT/DFX exploration:** Prototype scan-chain and built-in self-test (BIST) mechanisms with fault-injection tests.

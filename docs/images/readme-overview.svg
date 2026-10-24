@@ -13,7 +13,7 @@
 <rect x="758" y="111" width="96" height="32" rx="6" fill="#dcfce7"/><text x="770" y="133" fill="#166534">✓ Passing</text>
 </g>
 <text x="40" y="180" class="body">Building a 32-bit RISC-V processor incrementally from verified hardware blocks.</text>
-<text x="40" y="207" class="body">Currently implemented: standalone ALU and register file; CPU integration is planned.</text>
+<text x="40" y="207" class="body">Implemented: ALU, register file, decoder subset. CPU integration is planned.</text>
 <path d="M40 230 H984" stroke="#e2e8f0"/>
 <text x="40" y="276" class="heading">1. Project Overview</text>
 <g class="body">
@@ -29,7 +29,7 @@
 <g class="small">
 <text x="553" y="361" fill="#15803d">✓</text><text x="581" y="361">Milestone 1: 32-bit ALU — verified</text>
 <text x="553" y="392" fill="#15803d">✓</text><text x="581" y="392">Milestone 2: Register file — verified</text>
-<text x="553" y="423">○</text><text x="581" y="423">Milestone 3: RV32I decoder</text>
+<text x="553" y="423" fill="#15803d">✓</text><text x="581" y="423">Milestone 3: RV32I decoder — tests pending</text>
 <text x="553" y="454">○</text><text x="581" y="454">Milestone 4: CPU integration</text>
 <text x="553" y="485">○</text><text x="581" y="485">Milestone 5: DFT and coverage</text>
 </g>
@@ -38,7 +38,7 @@
 <rect x="40" y="619" width="457" height="365" rx="12" fill="#edfbf1" stroke="#d3ecd9"/>
 <rect x="512" y="619" width="472" height="365" rx="12" fill="#fff1f1" stroke="#f5d9d9"/>
 <text x="58" y="652" class="sub">Current Implementation</text>
-<text x="58" y="678" class="small">Individual modules, implemented and tested</text>
+<text x="58" y="678" class="small">ALU and register file verified; decoder in CI</text>
 <rect x="162" y="715" width="218" height="90" rx="9" fill="#dcecff" stroke="#4b79b5" stroke-width="2"/>
 <text x="271" y="750" font-size="20" font-weight="700" text-anchor="middle">32-bit ALU</text>
 <text x="271" y="778" class="small" text-anchor="middle">ADD · SUB · AND · OR · XOR</text>
@@ -51,7 +51,7 @@
 <text x="57" y="865" class="mono">rs1/rs2 →</text><text x="57" y="903" class="mono">rd / wd →</text>
 <text x="387" y="883" class="small">rd1/rd2</text>
 <text x="532" y="652" class="sub">Planned CPU Datapath</text>
-<text x="532" y="678" class="small">Conceptual architecture — not integrated yet</text>
+<text x="532" y="678" class="small">Decoder subset implemented; no CPU integration</text>
 <g class="box">
 <rect x="531" y="714" width="77" height="56" rx="7" fill="#ffe4e6"/>
 <rect x="637" y="714" width="134" height="56" rx="7" fill="#e0edff"/>
@@ -68,7 +68,7 @@
 <g stroke="#475569" stroke-width="2.5" fill="none">
 <path d="M608 742 H637 M771 742 H798 M673 873 H722 M825 873 H866 M880 770 V806 H605 V839"/>
 </g>
-<text x="532" y="951" class="small">Green: built separately · Other blocks: planned</text>
+<text x="532" y="951" class="small">Green: RTL blocks exist · Connections: planned</text>
 <path d="M40 1007 H984" stroke="#e2e8f0"/>
 <text x="40" y="1051" class="heading">3. How It Works</text>
 <rect x="40" y="1070" width="457" height="215" rx="12" fill="#edf7ff" stroke="#dbeafe"/>
