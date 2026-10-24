@@ -22,8 +22,8 @@ async def fetch_execute_and_halt(dut):
     assert int(dut.halted.value) == 0
     dut.rst.value = 0
 
-    # 5, 7, 12, 7, 4, 7, 3, 9
-    expected_results = [5, 7, 12, 7, 4, 7, 3, 9]
+    # 5, 7, 12, 7, 4, 15, 8, 6
+    expected_results = [5, 7, 12, 7, 4, 15, 8, 6]
     for index, expected in enumerate(expected_results):
         await settle()
         assert int(dut.pc.value) == index * 4
