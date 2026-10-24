@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1450" viewBox="0 0 1024 1450">
+<style>text{font-family:Arial,Helvetica,sans-serif;fill:#17243a}.heading{font-weight:700;font-size:30px}.body{font-size:17px}.small{font-size:15px}.sub{font-size:21px;font-weight:700}.mono{font-family:monospace;font-size:16px}.box{stroke:#cbd5e1;stroke-width:1.5}</style>
+<rect width="1024" height="1450" fill="white"/>
+<text x="40" y="56" font-size="38" font-weight="700">RISC-V SoC Verification</text>
+<text x="40" y="90" font-size="20">SystemVerilog RTL design and Python-based hardware verification</text>
+<g font-size="15" font-weight="600">
+<rect x="40" y="111" width="133" height="32" rx="6" fill="#edf1f6"/><text x="51" y="133">SystemVerilog</text>
+<rect x="183" y="111" width="84" height="32" rx="6" fill="#edf1f6"/><text x="195" y="133">Python</text>
+<rect x="277" y="111" width="89" height="32" rx="6" fill="#edf1f6"/><text x="289" y="133">cocotb</text>
+<rect x="376" y="111" width="101" height="32" rx="6" fill="#edf1f6"/><text x="388" y="133">Verilator</text>
+<rect x="487" y="111" width="145" height="32" rx="6" fill="#edf1f6"/><text x="499" y="133">GitHub Actions</text>
+<rect x="642" y="111" width="106" height="32" rx="6" fill="#edf1f6"/><text x="654" y="133">Ubuntu CI</text>
+<rect x="758" y="111" width="96" height="32" rx="6" fill="#dcfce7"/><text x="770" y="133" fill="#166534">✓ Passing</text>
+</g>
+<text x="40" y="180" class="body">Building a 32-bit RISC-V processor incrementally from verified hardware blocks.</text>
+<text x="40" y="207" class="body">Currently implemented: standalone ALU and register file; CPU integration is planned.</text>
+<path d="M40 230 H984" stroke="#e2e8f0"/>
+<text x="40" y="276" class="heading">1. Project Overview</text>
+<g class="body">
+<text x="40" y="313">A simulation-only digital hardware project</text>
+<text x="40" y="340">using SystemVerilog, Verilator, and cocotb.</text>
+<text x="40" y="367">Each module is independently tested using</text>
+<text x="40" y="394">directed and seeded randomized scenarios.</text>
+<text x="40" y="435">The goal is to integrate a small RV32I CPU</text>
+<text x="40" y="462">and later explore DFT/DFX techniques.</text>
+</g>
+<rect x="530" y="292" width="454" height="235" rx="12" fill="#edf5ff" stroke="#dbeafe"/>
+<text x="552" y="325" class="sub">Current Status</text>
+<g class="small">
+<text x="553" y="361" fill="#15803d">✓</text><text x="581" y="361">Milestone 1: 32-bit ALU — verified</text>
+<text x="553" y="392" fill="#15803d">✓</text><text x="581" y="392">Milestone 2: Register file — verified</text>
+<text x="553" y="423">○</text><text x="581" y="423">Milestone 3: RV32I decoder</text>
+<text x="553" y="454">○</text><text x="581" y="454">Milestone 4: CPU integration</text>
+<text x="553" y="485">○</text><text x="581" y="485">Milestone 5: DFT and coverage</text>
+</g>
+<path d="M40 552 H984" stroke="#e2e8f0"/>
+<text x="40" y="597" class="heading">2. Architecture</text>
+<rect x="40" y="619" width="457" height="365" rx="12" fill="#edfbf1" stroke="#d3ecd9"/>
+<rect x="512" y="619" width="472" height="365" rx="12" fill="#fff1f1" stroke="#f5d9d9"/>
+<text x="58" y="652" class="sub">Current Implementation</text>
+<text x="58" y="678" class="small">Individual modules, implemented and tested</text>
+<rect x="162" y="715" width="218" height="90" rx="9" fill="#dcecff" stroke="#4b79b5" stroke-width="2"/>
+<text x="271" y="750" font-size="20" font-weight="700" text-anchor="middle">32-bit ALU</text>
+<text x="271" y="778" class="small" text-anchor="middle">ADD · SUB · AND · OR · XOR</text>
+<text x="57" y="747" class="mono">a[31:0] →</text><text x="57" y="780" class="mono">b[31:0] →</text>
+<text x="390" y="748" class="small">result</text><text x="390" y="779" class="small">zero</text>
+<rect x="162" y="832" width="218" height="106" rx="9" fill="#eee7ff" stroke="#8365b1" stroke-width="2"/>
+<text x="271" y="867" font-size="20" font-weight="700" text-anchor="middle">32 × 32-bit</text>
+<text x="271" y="896" font-size="20" font-weight="700" text-anchor="middle">Register File</text>
+<text x="271" y="921" class="small" text-anchor="middle">2 reads · 1 write · x0 = 0</text>
+<text x="57" y="865" class="mono">rs1/rs2 →</text><text x="57" y="903" class="mono">rd / wd →</text>
+<text x="387" y="883" class="small">rd1/rd2</text>
+<text x="532" y="652" class="sub">Planned CPU Datapath</text>
+<text x="532" y="678" class="small">Conceptual architecture — not integrated yet</text>
+<g class="box">
+<rect x="531" y="714" width="77" height="56" rx="7" fill="#ffe4e6"/>
+<rect x="637" y="714" width="134" height="56" rx="7" fill="#e0edff"/>
+<rect x="798" y="714" width="166" height="56" rx="7" fill="#fff1d6"/>
+<rect x="537" y="839" width="136" height="67" rx="7" fill="#dff6e5"/>
+<rect x="722" y="839" width="103" height="67" rx="7" fill="#dff6e5"/>
+<rect x="866" y="839" width="103" height="67" rx="7" fill="#e0edff"/>
+</g>
+<g class="small" text-anchor="middle">
+<text x="569" y="748">PC</text><text x="704" y="748">Instruction</text><text x="881" y="748">Decoder</text>
+<text x="605" y="867">Register</text><text x="605" y="888">file</text>
+<text x="773" y="877">ALU</text><text x="917" y="877">Memory</text>
+</g>
+<g stroke="#475569" stroke-width="2.5" fill="none">
+<path d="M608 742 H637 M771 742 H798 M673 873 H722 M825 873 H866 M880 770 V806 H605 V839"/>
+</g>
+<text x="532" y="951" class="small">Green: built separately · Other blocks: planned</text>
+<path d="M40 1007 H984" stroke="#e2e8f0"/>
+<text x="40" y="1051" class="heading">3. How It Works</text>
+<rect x="40" y="1070" width="457" height="215" rx="12" fill="#edf7ff" stroke="#dbeafe"/>
+<rect x="512" y="1070" width="472" height="215" rx="12" fill="#f5efff" stroke="#e8dafa"/>
+<text x="59" y="1106" class="sub">ALU</text>
+<g class="body">
+<text x="59" y="1140">Takes two 32-bit operands and a 3-bit</text>
+<text x="59" y="1167">operation code. Produces a 32-bit result.</text>
+<text x="59" y="1208" class="mono">000 ADD   001 SUB   010 AND</text>
+<text x="59" y="1238" class="mono">011 OR    100 XOR</text>
+<text x="532" y="1140">32 registers (x0–x31), each 32 bits.</text>
+<text x="532" y="1167">Two asynchronous read ports.</text>
+<text x="532" y="1194">One rising-edge synchronous write port.</text>
+<text x="532" y="1221">x0 always reads zero; writes ignored.</text>
+<text x="532" y="1248">Synchronous reset clears storage.</text>
+</g>
+<text x="532" y="1106" class="sub">Register File</text>
+<path d="M40 1307 H984" stroke="#e2e8f0"/>
+<text x="40" y="1350" class="heading">4. Verification Strategy</text>
+<rect x="40" y="1367" width="944" height="63" rx="11" fill="#f5f8fc" stroke="#e2e8f0"/>
+<g class="small" font-weight="700">
+<text x="57" y="1406">SystemVerilog RTL</text><text x="234" y="1406">→</text>
+<text x="270" y="1406">Verilator</text><text x="378" y="1406">→</text>
+<text x="416" y="1406">cocotb + Python</text><text x="587" y="1406">→</text>
+<text x="628" y="1406">Assertions</text><text x="750" y="1406">→</text>
+<text x="788" y="1406">GitHub CI</text>
+</g></svg>
