@@ -1,4 +1,4 @@
-<p align="center"><img src="docs/images/readme-overview-v3.svg" alt="RISC-V SoC Verification project overview: technology stack, completed milestones, implemented and planned architecture, and verification strategy" width="100%"></p>
+<p align="center"><img src="docs/images/reference.jpeg" alt="Original RISC-V SoC Verification reference design" width="100%"></p>
 
 > **Visual overview:** The graphic summarizes current progress. Detailed design explanations, tests, and setup instructions follow below.
 
