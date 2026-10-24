@@ -1,16 +1,17 @@
 # Verification Plan
 
 ## ALU
+The cocotb testbench compares RTL against a Python reference model for all eight operation selectors across six directed and 200 reproducible random operand pairs. It checks the zero flag.
 
-The cocotb testbench compares the RTL output against a Python reference model for all eight operation selectors across six directed and 200 reproducible random operand pairs. It also checks the zero flag on each case.
+## Register file
+Directed cocotb tests verify reset clearing, x0 immutability, x1/x31 boundary registers, independent dual read ports, write-enable gating, synchronous write timing, overwrite behavior and reset priority over writes.
 
-Run `make lint` and `make test` with Verilator, Python and cocotb installed.
+A seeded randomized test performs 500 write/read transactions against a Python register model, followed by an exhaustive 32 × 32 dual-read address sweep. The reference model preserves x0 as zero.
 
-## Planned
+## Commands
+- `make lint`: lint both RTL modules using Verilator.
+- `make test-alu`: verify the ALU.
+- `make test-register-file`: verify the register file.
+- `make test`: run both test suites in separate simulator build directories.
 
-- Register-file read/write/reset behavior
-- Decoder instruction classification and illegal cases
-- CPU integration and program execution
-- Functional coverage, assertions and fault injection
-
-Coverage metrics and CPU compliance are **not yet claimed**. Verify the CI run status before reporting a passing regression.
+GitHub Actions runs lint and both suites on pushes and pull requests. Passing CI must be confirmed from the actual workflow run; no functional coverage or CPU compliance is claimed yet.
