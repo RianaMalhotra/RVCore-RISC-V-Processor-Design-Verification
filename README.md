@@ -1,6 +1,6 @@
-<p align="center"><img src="docs/images/reference.jpeg" alt="Original RISC-V SoC Verification reference design" width="100%"></p>
+<p align="center"><img src="docs/images/readme-overview-v3.svg" alt="Updated RISC-V SoC architecture, milestone status, timing diagram, operation tables and verification flow" width="100%"></p>
 
-> **Visual overview:** The graphic summarizes current progress. Detailed design explanations, tests, and setup instructions follow below.
+> **Visual overview:** Updated for the Milestone 4 datapath pull request (CI pending). The timing diagrams, operation tables, and verification flow remain included. [Original reference image](docs/images/reference.jpeg) is preserved. Detailed design explanations, tests, and setup instructions follow below.
 
 ---
 
@@ -181,7 +181,7 @@ Distributed under the [MIT License](LICENSE).
 
 The `cpu_datapath` top-level connects the existing **RV32I arithmetic-subset decoder → 32 × 32-bit register file → ALU → register writeback**. It adds a 32-bit program counter starting at zero and advancing by four bytes for each supported instruction. Unsupported instructions assert `illegal` and latch `halted`, freezing the PC and preventing subsequent writes until reset.
 
-**This is a CPU integration prototype, not a complete RV32I processor.** Instructions are supplied externally via a 32-bit input; instruction memory, branches, jumps, loads/stores, and data memory are not yet present. The original reference image above is intentionally preserved unchanged; its milestone checklist is a design reference, not a live status indicator.
+**This is a CPU integration prototype, not a complete RV32I processor.** Instructions are supplied externally via a 32-bit input; instruction memory, branches, jumps, loads/stores, and data memory are not yet present. The original uploaded reference JPEG remains available in `docs/images/reference.jpeg`. The updated SVG overview above reflects this in-progress milestone while retaining timing and verification diagrams.
 
 ```text
 External instruction[31:0]
