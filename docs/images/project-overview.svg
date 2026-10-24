@@ -1,0 +1,135 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1050" height="1580" viewBox="0 0 1050 1580"><rect width="1050" height="1580" fill="#ffffff"/>
+<text x="40" y="56" font-family="Arial,Helvetica,sans-serif" font-size="38" fill="#142138" font-weight="700" text-anchor="start">RISC-V SoC Verification</text>
+<text x="40" y="91" font-family="Arial,Helvetica,sans-serif" font-size="20" fill="#374151" font-weight="400" text-anchor="start">Simulation-first RTL design and Python-based hardware verification</text>
+<rect x="40" y="112" width="132" height="30" rx="6" fill="#eef2f6" stroke="none"/>
+<text x="52" y="133" font-family="Arial,Helvetica,sans-serif" font-size="14" fill="#243246" font-weight="600" text-anchor="start">SystemVerilog</text>
+<rect x="182" y="112" width="87" height="30" rx="6" fill="#eef2f6" stroke="none"/>
+<text x="194" y="133" font-family="Arial,Helvetica,sans-serif" font-size="14" fill="#243246" font-weight="600" text-anchor="start">Python</text>
+<rect x="279" y="112" width="90" height="30" rx="6" fill="#eef2f6" stroke="none"/>
+<text x="291" y="133" font-family="Arial,Helvetica,sans-serif" font-size="14" fill="#243246" font-weight="600" text-anchor="start">cocotb</text>
+<rect x="379" y="112" width="98" height="30" rx="6" fill="#eef2f6" stroke="none"/>
+<text x="391" y="133" font-family="Arial,Helvetica,sans-serif" font-size="14" fill="#243246" font-weight="600" text-anchor="start">Verilator</text>
+<rect x="487" y="112" width="140" height="30" rx="6" fill="#eef2f6" stroke="none"/>
+<text x="499" y="133" font-family="Arial,Helvetica,sans-serif" font-size="14" fill="#243246" font-weight="600" text-anchor="start">GitHub Actions</text>
+<rect x="637" y="112" width="108" height="30" rx="6" fill="#eef2f6" stroke="none"/>
+<text x="649" y="133" font-family="Arial,Helvetica,sans-serif" font-size="14" fill="#243246" font-weight="600" text-anchor="start">Ubuntu CI</text>
+<rect x="755" y="112" width="96" height="30" rx="6" fill="#dcfce7" stroke="none"/>
+<text x="767" y="133" font-family="Arial,Helvetica,sans-serif" font-size="14" fill="#243246" font-weight="600" text-anchor="start">✓ Passing</text>
+<text x="40" y="179" font-family="Arial,Helvetica,sans-serif" font-size="18" fill="#344154" font-weight="400" text-anchor="start">Building a 32-bit RISC-V processor from verified SystemVerilog components.</text>
+<text x="40" y="207" font-family="Arial,Helvetica,sans-serif" font-size="18" fill="#344154" font-weight="400" text-anchor="start">Implemented today: standalone ALU and register file. CPU integration is planned.</text>
+<line x1="40" y1="229" x2="1010" y2="229" stroke="#e2e8f0" stroke-width="2"/>
+<text x="40" y="274" font-family="Arial,Helvetica,sans-serif" font-size="29" fill="#17253b" font-weight="700" text-anchor="start">1. Project Overview</text>
+<text x="40" y="311" font-family="Arial,Helvetica,sans-serif" font-size="17" fill="#344154" font-weight="400" text-anchor="start">A modular digital hardware project developed entirely</text>
+<text x="40" y="338" font-family="Arial,Helvetica,sans-serif" font-size="17" fill="#344154" font-weight="400" text-anchor="start">in simulation. RTL is tested with cocotb and Verilator,</text>
+<text x="40" y="365" font-family="Arial,Helvetica,sans-serif" font-size="17" fill="#344154" font-weight="400" text-anchor="start">using directed and reproducible randomized tests.</text>
+<text x="40" y="392" font-family="Arial,Helvetica,sans-serif" font-size="17" fill="#344154" font-weight="400" text-anchor="start">GitHub Actions runs lint and regression on changes.</text>
+<text x="40" y="419" font-family="Arial,Helvetica,sans-serif" font-size="17" fill="#344154" font-weight="400" text-anchor="start"></text>
+<text x="40" y="446" font-family="Arial,Helvetica,sans-serif" font-size="17" fill="#344154" font-weight="400" text-anchor="start">Goal: build toward an RV32I processor, then explore</text>
+<text x="40" y="473" font-family="Arial,Helvetica,sans-serif" font-size="17" fill="#344154" font-weight="400" text-anchor="start">design-for-test concepts such as scan and BIST.</text>
+<rect x="552" y="293" width="457" height="239" rx="12" fill="#eef6ff" stroke="#d7e6fa"/>
+<text x="572" y="325" font-family="Arial,Helvetica,sans-serif" font-size="20" fill="#152b46" font-weight="700" text-anchor="start">Current Status</text>
+<text x="574" y="359" font-family="Arial,Helvetica,sans-serif" font-size="20" fill="#16804a" font-weight="700" text-anchor="start">✓</text>
+<text x="605" y="357" font-family="Arial,Helvetica,sans-serif" font-size="16" fill="#26354a" font-weight="600" text-anchor="start">Milestone 1: 32-bit ALU — verified</text>
+<text x="574" y="389" font-family="Arial,Helvetica,sans-serif" font-size="20" fill="#16804a" font-weight="700" text-anchor="start">✓</text>
+<text x="605" y="387" font-family="Arial,Helvetica,sans-serif" font-size="16" fill="#26354a" font-weight="600" text-anchor="start">Milestone 2: Register file — verified</text>
+<text x="574" y="419" font-family="Arial,Helvetica,sans-serif" font-size="20" fill="#778497" font-weight="700" text-anchor="start">○</text>
+<text x="605" y="417" font-family="Arial,Helvetica,sans-serif" font-size="16" fill="#26354a" font-weight="400" text-anchor="start">Milestone 3: RV32I instruction decoder</text>
+<text x="574" y="449" font-family="Arial,Helvetica,sans-serif" font-size="20" fill="#778497" font-weight="700" text-anchor="start">○</text>
+<text x="605" y="447" font-family="Arial,Helvetica,sans-serif" font-size="16" fill="#26354a" font-weight="400" text-anchor="start">Milestone 4: CPU datapath integration</text>
+<text x="574" y="479" font-family="Arial,Helvetica,sans-serif" font-size="20" fill="#778497" font-weight="700" text-anchor="start">○</text>
+<text x="605" y="477" font-family="Arial,Helvetica,sans-serif" font-size="16" fill="#26354a" font-weight="400" text-anchor="start">Milestone 5: Coverage and assertions</text>
+<text x="574" y="509" font-family="Arial,Helvetica,sans-serif" font-size="20" fill="#778497" font-weight="700" text-anchor="start">○</text>
+<text x="605" y="507" font-family="Arial,Helvetica,sans-serif" font-size="16" fill="#26354a" font-weight="400" text-anchor="start">Milestone 6: Scan / BIST experiments</text>
+<line x1="40" y1="559" x2="1010" y2="559" stroke="#e2e8f0" stroke-width="2"/>
+<text x="40" y="602" font-family="Arial,Helvetica,sans-serif" font-size="29" fill="#17253b" font-weight="700" text-anchor="start">2. Architecture</text>
+<rect x="40" y="621" width="472" height="390" rx="12" fill="#edfbf1" stroke="#d1ecd9"/>
+<rect x="527" y="621" width="482" height="390" rx="12" fill="#fff0f0" stroke="#f5d9d9"/>
+<text x="60" y="656" font-family="Arial,Helvetica,sans-serif" font-size="21" fill="#19384a" font-weight="700" text-anchor="start">Current Implementation</text>
+<text x="60" y="682" font-family="Arial,Helvetica,sans-serif" font-size="15" fill="#516275" font-weight="400" text-anchor="start">Independently verified modules</text>
+<rect x="170" y="718" width="230" height="90" rx="8" fill="#e1efff" stroke="#3f79be"/>
+<text x="285" y="750" font-family="Arial,Helvetica,sans-serif" font-size="20" fill="#1d4779" font-weight="700" text-anchor="middle">32-bit ALU</text>
+<text x="285" y="778" font-family="Arial,Helvetica,sans-serif" font-size="14" fill="#1d4779" font-weight="400" text-anchor="middle">ADD · SUB · AND · OR · XOR</text>
+<text x="63" y="740" font-family="Arial,Helvetica,sans-serif" font-size="14" fill="#19283c" font-weight="400" text-anchor="start">a[31:0]</text>
+<text x="63" y="767" font-family="Arial,Helvetica,sans-serif" font-size="14" fill="#19283c" font-weight="400" text-anchor="start">b[31:0]</text>
+<line x1="132" y1="742" x2="169" y2="742" stroke="#53647a" stroke-width="2.5"/>
+<path d="M 160 737 L 169 742 L 160 747" fill="none" stroke="#53647a" stroke-width="2.5"/>
+<line x1="132" y1="766" x2="169" y2="766" stroke="#53647a" stroke-width="2.5"/>
+<path d="M 160 761 L 169 766 L 160 771" fill="none" stroke="#53647a" stroke-width="2.5"/>
+<line x1="400" y1="762" x2="453" y2="762" stroke="#53647a" stroke-width="2.5"/>
+<path d="M 444 757 L 453 762 L 444 767" fill="none" stroke="#53647a" stroke-width="2.5"/>
+<text x="405" y="735" font-family="Arial,Helvetica,sans-serif" font-size="14" fill="#19283c" font-weight="400" text-anchor="start">result</text>
+<text x="405" y="792" font-family="Arial,Helvetica,sans-serif" font-size="14" fill="#19283c" font-weight="400" text-anchor="start">zero</text>
+<rect x="170" y="845" width="230" height="118" rx="8" fill="#eee8ff" stroke="#7b63ad"/>
+<text x="285" y="880" font-family="Arial,Helvetica,sans-serif" font-size="19" fill="#523b82" font-weight="700" text-anchor="middle">32 × 32-bit</text>
+<text x="285" y="906" font-family="Arial,Helvetica,sans-serif" font-size="19" fill="#523b82" font-weight="700" text-anchor="middle">Register File</text>
+<text x="285" y="933" font-family="Arial,Helvetica,sans-serif" font-size="14" fill="#523b82" font-weight="400" text-anchor="middle">2 reads · 1 write · x0 = 0</text>
+<text x="62" y="867" font-family="Arial,Helvetica,sans-serif" font-size="14" fill="#19283c" font-weight="400" text-anchor="start">rs1 / rs2</text>
+<text x="62" y="910" font-family="Arial,Helvetica,sans-serif" font-size="14" fill="#19283c" font-weight="400" text-anchor="start">rd / wd</text>
+<line x1="138" y1="868" x2="168" y2="868" stroke="#53647a" stroke-width="2.5"/>
+<path d="M 159 863 L 168 868 L 159 873" fill="none" stroke="#53647a" stroke-width="2.5"/>
+<line x1="138" y1="908" x2="168" y2="908" stroke="#53647a" stroke-width="2.5"/>
+<path d="M 159 903 L 168 908 L 159 913" fill="none" stroke="#53647a" stroke-width="2.5"/>
+<line x1="400" y1="901" x2="455" y2="901" stroke="#53647a" stroke-width="2.5"/>
+<path d="M 446 896 L 455 901 L 446 906" fill="none" stroke="#53647a" stroke-width="2.5"/>
+<text x="404" y="876" font-family="Arial,Helvetica,sans-serif" font-size="14" fill="#19283c" font-weight="400" text-anchor="start">rd1 / rd2</text>
+<text x="548" y="656" font-family="Arial,Helvetica,sans-serif" font-size="21" fill="#19384a" font-weight="700" text-anchor="start">Planned CPU Datapath</text>
+<text x="548" y="682" font-family="Arial,Helvetica,sans-serif" font-size="15" fill="#516275" font-weight="400" text-anchor="start">Conceptual; not implemented end-to-end</text>
+<rect x="551" y="727" width="78" height="54" rx="7" fill="#ffe6e6" stroke="#c2cbd7"/>
+<text x="590" y="760" font-family="Arial,Helvetica,sans-serif" font-size="15" fill="#26354a" font-weight="600" text-anchor="middle">PC</text>
+<rect x="655" y="727" width="129" height="54" rx="7" fill="#e3efff" stroke="#c2cbd7"/>
+<text x="719.5" y="760" font-family="Arial,Helvetica,sans-serif" font-size="15" fill="#26354a" font-weight="600" text-anchor="middle">Instruction</text>
+<rect x="812" y="727" width="172" height="54" rx="7" fill="#fff1d6" stroke="#c2cbd7"/>
+<text x="898" y="760" font-family="Arial,Helvetica,sans-serif" font-size="15" fill="#26354a" font-weight="600" text-anchor="middle">Decoder</text>
+<line x1="629" y1="754" x2="654" y2="754" stroke="#53647a" stroke-width="2.5"/>
+<path d="M 645 749 L 654 754 L 645 759" fill="none" stroke="#53647a" stroke-width="2.5"/>
+<line x1="784" y1="754" x2="811" y2="754" stroke="#53647a" stroke-width="2.5"/>
+<path d="M 802 749 L 811 754 L 802 759" fill="none" stroke="#53647a" stroke-width="2.5"/>
+<rect x="562" y="839" width="142" height="63" rx="7" fill="#e4f5e8" stroke="#c2cbd7"/>
+<text x="633" y="876.5" font-family="Arial,Helvetica,sans-serif" font-size="15" fill="#26354a" font-weight="600" text-anchor="middle">Register file</text>
+<rect x="759" y="839" width="116" height="63" rx="7" fill="#e4f5e8" stroke="#c2cbd7"/>
+<text x="817" y="876.5" font-family="Arial,Helvetica,sans-serif" font-size="15" fill="#26354a" font-weight="600" text-anchor="middle">ALU</text>
+<rect x="895" y="839" width="95" height="63" rx="7" fill="#e3efff" stroke="#c2cbd7"/>
+<text x="942.5" y="876.5" font-family="Arial,Helvetica,sans-serif" font-size="15" fill="#26354a" font-weight="600" text-anchor="middle">Memory</text>
+<line x1="704" y1="870" x2="758" y2="870" stroke="#53647a" stroke-width="2.5"/>
+<path d="M 749 865 L 758 870 L 749 875" fill="none" stroke="#53647a" stroke-width="2.5"/>
+<line x1="875" y1="870" x2="894" y2="870" stroke="#53647a" stroke-width="2.5"/>
+<path d="M 885 865 L 894 870 L 885 875" fill="none" stroke="#53647a" stroke-width="2.5"/>
+<line x1="898" y1="781" x2="898" y2="812" stroke="#aab5c5" stroke-width="2"/>
+<line x1="898" y1="812" x2="631" y2="812" stroke="#aab5c5" stroke-width="2"/>
+<line x1="631" y1="812" x2="631" y2="838" stroke="#aab5c5" stroke-width="2"/>
+<text x="552" y="959" font-family="Arial,Helvetica,sans-serif" font-size="15" fill="#247448" font-weight="400" text-anchor="start">Green: implemented separately</text>
+<text x="552" y="982" font-family="Arial,Helvetica,sans-serif" font-size="15" fill="#6a6670" font-weight="400" text-anchor="start">Other blocks + arrows: planned</text>
+<line x1="40" y1="1042" x2="1010" y2="1042" stroke="#e2e8f0" stroke-width="2"/>
+<text x="40" y="1086" font-family="Arial,Helvetica,sans-serif" font-size="29" fill="#17253b" font-weight="700" text-anchor="start">3. How It Works</text>
+<rect x="40" y="1105" width="472" height="232" rx="12" fill="#edf7ff" stroke="#dceafa"/>
+<rect x="527" y="1105" width="482" height="232" rx="12" fill="#f5efff" stroke="#e5d9f5"/>
+<text x="60" y="1139" font-family="Arial,Helvetica,sans-serif" font-size="21" fill="#182d48" font-weight="700" text-anchor="start">ALU</text>
+<text x="60" y="1171" font-family="Arial,Helvetica,sans-serif" font-size="16" fill="#344154" font-weight="400" text-anchor="start">Two 32-bit inputs and a 3-bit operation selector.</text>
+<text x="60" y="1199" font-family="Arial,Helvetica,sans-serif" font-size="16" fill="#344154" font-weight="400" text-anchor="start">000 ADD    001 SUB    010 AND</text>
+<text x="60" y="1227" font-family="Arial,Helvetica,sans-serif" font-size="16" fill="#344154" font-weight="400" text-anchor="start">011 OR       100 XOR</text>
+<text x="60" y="1255" font-family="Arial,Helvetica,sans-serif" font-size="16" fill="#344154" font-weight="400" text-anchor="start">Result wraps to 32 bits; zero flag asserts</text>
+<text x="60" y="1283" font-family="Arial,Helvetica,sans-serif" font-size="16" fill="#344154" font-weight="400" text-anchor="start">when the result equals zero.</text>
+<text x="547" y="1139" font-family="Arial,Helvetica,sans-serif" font-size="21" fill="#182d48" font-weight="700" text-anchor="start">Register File</text>
+<text x="547" y="1171" font-family="Arial,Helvetica,sans-serif" font-size="16" fill="#344154" font-weight="400" text-anchor="start">32 registers (x0–x31), each 32 bits wide.</text>
+<text x="547" y="1199" font-family="Arial,Helvetica,sans-serif" font-size="16" fill="#344154" font-weight="400" text-anchor="start">Two asynchronous read ports.</text>
+<text x="547" y="1227" font-family="Arial,Helvetica,sans-serif" font-size="16" fill="#344154" font-weight="400" text-anchor="start">One synchronous write port (rising edge).</text>
+<text x="547" y="1255" font-family="Arial,Helvetica,sans-serif" font-size="16" fill="#344154" font-weight="400" text-anchor="start">Writes to x0 are ignored; reads return zero.</text>
+<text x="547" y="1283" font-family="Arial,Helvetica,sans-serif" font-size="16" fill="#344154" font-weight="400" text-anchor="start">Reset clears storage (project design choice).</text>
+<line x1="40" y1="1364" x2="1010" y2="1364" stroke="#e2e8f0" stroke-width="2"/>
+<text x="40" y="1407" font-family="Arial,Helvetica,sans-serif" font-size="29" fill="#17253b" font-weight="700" text-anchor="start">4. Verification Strategy</text>
+<rect x="40" y="1424" width="970" height="116" rx="12" fill="#f6f8fb" stroke="#e2e8f0"/>
+<rect x="52" y="1452" width="185" height="58" rx="8" fill="#e8f2ff" stroke="#cbd5e1"/>
+<text x="144.5" y="1486" font-family="Arial,Helvetica,sans-serif" font-size="16" fill="#25354a" font-weight="600" text-anchor="middle">SystemVerilog RTL</text>
+<line x1="241" y1="1481" x2="276" y2="1481" stroke="#53647a" stroke-width="2.5"/>
+<path d="M 267 1476 L 276 1481 L 267 1486" fill="none" stroke="#53647a" stroke-width="2.5"/>
+<rect x="281" y="1452" width="210" height="58" rx="8" fill="#fff3dd" stroke="#cbd5e1"/>
+<text x="386" y="1486" font-family="Arial,Helvetica,sans-serif" font-size="16" fill="#25354a" font-weight="600" text-anchor="middle">Verilator simulation</text>
+<line x1="495" y1="1481" x2="536" y2="1481" stroke="#53647a" stroke-width="2.5"/>
+<path d="M 527 1476 L 536 1481 L 527 1486" fill="none" stroke="#53647a" stroke-width="2.5"/>
+<rect x="541" y="1452" width="205" height="58" rx="8" fill="#e8f2ff" stroke="#cbd5e1"/>
+<text x="643.5" y="1486" font-family="Arial,Helvetica,sans-serif" font-size="16" fill="#25354a" font-weight="600" text-anchor="middle">cocotb + Python</text>
+<line x1="750" y1="1481" x2="794" y2="1481" stroke="#53647a" stroke-width="2.5"/>
+<path d="M 785 1476 L 794 1481 L 785 1486" fill="none" stroke="#53647a" stroke-width="2.5"/>
+<rect x="799" y="1452" width="191" height="58" rx="8" fill="#e8f8ee" stroke="#cbd5e1"/>
+<text x="894.5" y="1486" font-family="Arial,Helvetica,sans-serif" font-size="16" fill="#25354a" font-weight="600" text-anchor="middle">Assertions / CI</text>
+</svg>
