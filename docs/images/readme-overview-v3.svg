@@ -21,7 +21,7 @@
 <text x="40" y="340">using SystemVerilog, Verilator, and cocotb.</text>
 <text x="40" y="367">Each module is independently tested using</text>
 <text x="40" y="394">directed and seeded randomized scenarios.</text>
-<text x="40" y="435">Next: verify arithmetic datapath and add instruction memory</text>
+<text x="40" y="435">Milestone 5: instruction memory and fetch integration in CI</text>
 <text x="40" y="462">and later explore DFT/DFX techniques.</text>
 </g>
 <rect x="530" y="292" width="454" height="235" rx="12" fill="#edf5ff" stroke="#dbeafe"/>
@@ -31,7 +31,7 @@
 <text x="553" y="392" fill="#15803d">✓</text><text x="581" y="392">Milestone 2: Register file — verified</text>
 <text x="553" y="423" fill="#15803d">✓</text><text x="581" y="423">Milestone 3: RV32I decoder — verified</text>
 <text x="553" y="454" fill="#15803d">✓</text><text x="581" y="454">Milestone 4: Datapath verified</text>
-<text x="553" y="485">○</text><text x="581" y="485">Milestone 5: Coverage and DFT</text>
+<text x="553" y="485" fill="#b45309">◐</text><text x="581" y="485">Milestone 5: Instruction fetch — CI pending</text>
 </g>
 <path d="M40 552 H984" stroke="#e2e8f0"/>
 <text x="40" y="597" class="heading">2. Architecture</text>
