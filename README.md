@@ -176,3 +176,26 @@ Follow progress through [GitHub Issues](https://github.com/RianaMalhotra/riscv-s
 ## License
 
 Distributed under the [MIT License](LICENSE).
+
+## Milestone 4 — Single-cycle arithmetic datapath (feature branch)
+
+The `cpu_datapath` top-level connects the existing **RV32I arithmetic-subset decoder → 32 × 32-bit register file → ALU → register writeback**. It adds a 32-bit program counter starting at zero and advancing by four bytes for each supported instruction. Unsupported instructions assert `illegal` and latch `halted`, freezing the PC and preventing subsequent writes until reset.
+
+**This is a CPU integration prototype, not a complete RV32I processor.** Instructions are supplied externally via a 32-bit input; instruction memory, branches, jumps, loads/stores, and data memory are not yet present. The original reference image above is intentionally preserved unchanged; its milestone checklist is a design reference, not a live status indicator.
+
+```text
+External instruction[31:0]
+        │
+        ▼
+   RV32I decoder ────── control ───────────────┐
+        │                                      │
+        ▼                                      ▼
+  Register file ── rs1_value ───────────────► ALU
+        │                                      │
+        └─ rs2_value ── immediate mux ────────►│
+                                               │
+                    register writeback ◄───────┘
+        PC: reset to 0, +4 per valid instruction; halt on illegal
+```
+
+Run `make test-cpu` for the end-to-end arithmetic program, register writeback, x0, illegal-instruction halt and reset checks. `make test` now includes the CPU suite. **CI results must pass before merging this milestone.**
