@@ -208,3 +208,11 @@ The new `cpu_system` top level connects a 64-word, read-only `instruction_memory
 The example program executes eight arithmetic instructions, writes results into registers, and stops on a zero-word sentinel. The cocotb system test verifies each fetched instruction's ALU result, sequential PC updates, halt behavior, and reset replay. Run `make test-system` or `make test` (all suites). The CI workflow already invokes `make test` and `make lint`, so the new suite is automatically included.
 
 **Limits:** This is still an arithmetic-subset prototype, not a full RV32I processor. There is no branch/jump control flow, load/store, data memory, external bus, or interrupt support. The memory image is loaded for simulation with `$readmemh`.
+
+## Milestone 6 — Conditional branches and jumps (PR; CI pending)
+
+The new `cpu_system_control` top-level integrates a `cpu_control_flow` decoder/comparator with the instruction memory, arithmetic decoder, register file, and ALU. Supported control flow: **BEQ, BNE, BLT, BGE, BLTU, BGEU, JAL, JALR**. Branch offsets are signed B-type immediates, JAL uses a signed J-type offset, and JALR computes `(rs1 + signed immediate) & ~1`. Taken branches/jumps update the PC; untaken branches use `PC + 4`. JAL/JALR write `PC + 4` to `rd` (except `x0`). Illegal encodings and misaligned taken targets halt execution; misaligned targets do not commit link writes.
+
+The stored `programs/control_flow.hex` executes a decrementing loop and skips an instruction with JAL. The cocotb suites `test_cpu_control_flow.py` and `test_cpu_system_control.py` test branch signedness, offsets, legal/illegal encodings, PC trace, and reset. Run `make test-control-flow`, `make test-control-system`, or `make test`.
+
+**Scope:** This is still a small arithmetic-and-control-flow CPU prototype, not a complete RV32I core. Loads/stores, data memory, system instructions, exceptions, and interrupts are not implemented. The existing timing diagram remains a register-file timing illustration.
