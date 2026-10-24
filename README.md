@@ -1,6 +1,6 @@
 <p align="center"><img src="docs/images/readme-overview-v3.svg" alt="Updated RISC-V SoC architecture, milestone status, timing diagram, operation tables and verification flow" width="100%"></p>
 
-> **Visual overview:** Updated through the completed and CI-verified Milestone 5 instruction-fetch integration. The timing diagrams, operation tables, and verification flow remain included. [Original reference image](docs/images/reference.jpeg) is preserved. Detailed design explanations, tests, and setup instructions follow below.
+> **Visual overview:** Updated through the completed and CI-verified Milestone 6 branches/jumps integration. The timing diagrams, operation tables, and verification flow remain included. [Original reference image](docs/images/reference.jpeg) is preserved. Detailed design explanations, tests, and setup instructions follow below.
 
 ---
 
@@ -26,7 +26,7 @@ This project is a hands-on exploration of **digital RTL design, processor archit
 | **Verification** | Directed + seeded randomized cocotb tests with Python reference models |
 | **Automation** | Verilator lint and simulation, GNU Make, GitHub Actions CI |
 | **Hardware required** | None—runs entirely in software |
-| **Current milestone** | Milestones 1–5 verified; instruction-fetch PR ready to merge |
+| **Current milestone** | Milestones 1–6 merged and CI verified |
 
 ## Architecture
 
@@ -159,7 +159,8 @@ riscv-soc-verification/
 - [x] **Milestone 4 — CPU datapath:** Add program counter, connect blocks, and execute a small RV32I subset in simulation.
 - [x] **Milestone 5 — Instruction memory and automatic fetch:** Load a hex program and execute arithmetic instructions from PC-addressed memory.
 - [ ] **Next — Verification depth:** Add assertions, functional coverage metrics, and integration-level regression.
-- [ ] **Milestone 6 — DFT/DFX exploration:** Prototype scan-chain and built-in self-test (BIST) mechanisms with fault-injection tests.
+- [x] **Milestone 6 — Branches and jumps:** BEQ, BNE, BLT, BGE, BLTU, BGEU, JAL, JALR with loop execution.
+- [ ] **Future — DFT/DFX exploration:** Prototype scan-chain and built-in self-test (BIST) mechanisms with fault-injection tests.
 
 Follow progress through [GitHub Issues](https://github.com/RianaMalhotra/riscv-soc-verification/issues) and [Actions](https://github.com/RianaMalhotra/riscv-soc-verification/actions).
 
@@ -209,7 +210,7 @@ The example program executes eight arithmetic instructions, writes results into 
 
 **Limits:** This is still an arithmetic-subset prototype, not a full RV32I processor. There is no branch/jump control flow, load/store, data memory, external bus, or interrupt support. The memory image is loaded for simulation with `$readmemh`.
 
-## Milestone 6 — Conditional branches and jumps (PR; CI pending)
+## Milestone 6 — Conditional branches and jumps (completed, CI verified)
 
 The new `cpu_system_control` top-level integrates a `cpu_control_flow` decoder/comparator with the instruction memory, arithmetic decoder, register file, and ALU. Supported control flow: **BEQ, BNE, BLT, BGE, BLTU, BGEU, JAL, JALR**. Branch offsets are signed B-type immediates, JAL uses a signed J-type offset, and JALR computes `(rs1 + signed immediate) & ~1`. Taken branches/jumps update the PC; untaken branches use `PC + 4`. JAL/JALR write `PC + 4` to `rd` (except `x0`). Illegal encodings and misaligned taken targets halt execution; misaligned targets do not commit link writes.
 
