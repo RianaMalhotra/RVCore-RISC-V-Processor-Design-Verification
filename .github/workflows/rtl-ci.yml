@@ -48,3 +48,14 @@ jobs:
           cd visualizer
           npm install --no-audit --no-fund
           npm run build
+      - name: Install browser for visualizer smoke test
+        run: cd visualizer && npx playwright install --with-deps chromium
+      - name: Run browser replay and capture screenshot
+        run: cd visualizer && npm run test:browser
+      - name: Upload real visualizer screenshot
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rvcore-visualizer-screenshot
+          path: visualizer/artifacts/rvcore-load-store-visualizer.png
+          if-no-files-found: ignore
