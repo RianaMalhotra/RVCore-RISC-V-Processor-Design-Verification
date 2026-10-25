@@ -14,18 +14,18 @@
 
 This project is a hands-on exploration of **digital RTL design, processor architecture, and hardware verification**. I implement synthesizable hardware modules in SystemVerilog, test their behavior against Python reference models with cocotb, and run automated regressions through GitHub Actions. The longer-term goal is a small RV32I-based CPU followed by design-for-test (DFT) experiments.
 
-> **Current scope:** The **32-bit ALU**, **32 × 32-bit register file**, and **limited RV32I arithmetic decoder** are implemented as **independently tested modules**. They are wired into arithmetic and control-flow CPU prototypes; a data-memory integration is now in review. This is not a complete SoC.
+> **Current scope (October 2026):** A simulation-only, single-cycle RV32I-subset CPU integrates integer arithmetic/shifts/comparisons, branches/jumps, and byte/halfword/word loads and stores. A React/Vite visualizer replays recorded Verilator/cocotb execution. **Milestone 10 verification expansion is in progress on PR #17.** This is not a complete RV32I-compliant SoC; system instructions, exceptions, interrupts, and external interfaces are not implemented.
 
 ## At a glance
 
 | | |
 | --- | --- |
 | **Focus** | RTL design, digital verification, RISC-V fundamentals, future DFT/DFX exploration |
-| **Implemented hardware** | 32-bit ALU; 32-register file; RV32I arithmetic-subset decoder |
-| **Verification** | Directed + seeded randomized cocotb tests with Python reference models |
+| **Implemented hardware** | 32-bit ALU; 32-register file; instruction decode/fetch; RV32I integer execution; branch/jump control; data memory; integrated CPU |
+| **Verification** | Directed cocotb unit/integration tests; seeded differential integer scoreboard and operation stimulus counts in PR #17 |
 | **Automation** | Verilator lint and simulation, GNU Make, GitHub Actions CI |
 | **Hardware required** | None—runs entirely in software |
-| **Current milestone** | Milestones 1–7 merged and CI verified |
+| **Current milestone** | Milestones 1–9 merged; Milestone 10 verification depth in progress (PR #17) |
 
 ## Architecture
 
@@ -76,7 +76,7 @@ The `zero` output is asserted whenever `result == 0`. The three-bit `op` values 
 
 ### Instruction decoder (Milestone 3)
 
-[`rtl/core/instruction_decoder.sv`](rtl/core/instruction_decoder.sv) decodes a **limited RV32I arithmetic subset**: R-type `ADD`, `SUB`, `AND`, `OR`, `XOR` and I-type `ADDI`, `ANDI`, `ORI`, `XORI`. It extracts register indices, sign-extends the I-immediate, and emits ALU operation, immediate-select, register-write and illegal-instruction signals. Unsupported encodings assert `illegal` and disable writes. **Loads, stores, branches, jumps, shifts and a complete CPU remain unimplemented.**
+[`rtl/core/instruction_decoder.sv`](rtl/core/instruction_decoder.sv) decodes a **limited RV32I arithmetic subset**: R-type `ADD`, `SUB`, `AND`, `OR`, `XOR` and I-type `ADDI`, `ANDI`, `ORI`, `XORI`. It extracts register indices, sign-extends the I-immediate, and emits ALU operation, immediate-select, register-write and illegal-instruction signals. Unsupported encodings assert `illegal` and disable writes. **This legacy decoder covers only the arithmetic subset; later integrated CPU modules add branches, jumps, loads/stores, and extended integer execution.**
 
 ## Verification: how correctness is checked
 
@@ -92,7 +92,7 @@ Rather than relying on visual waveform inspection alone, each module is tested b
 | **Register file randomized** | 500 seeded transactions against a software register model, then a 32 × 32 exhaustive read-address sweep |
 | **CI** | RTL lint followed by both cocotb suites on pushes and pull requests |
 
-A passing GitHub Actions run demonstrates that **these particular checks passed for that commit**; it does **not** establish full ISA compliance, measured functional coverage, or silicon readiness. See [the verification plan](docs/verification_plan.md) for details.
+A passing GitHub Actions run demonstrates that **the checks for that commit passed**; it does **not** establish full ISA compliance, coverage closure, or silicon readiness. The Milestone 10 scoreboard tracks exercised operation categories, **not** formal functional-coverage closure. See [the Milestone 10 verification plan](docs/m10_verification.md) and [the original verification plan](docs/verification_plan.md). See [the verification plan](docs/verification_plan.md) for details.
 
 ## Technology stack
 
@@ -113,17 +113,19 @@ This is **hardware design expressed as code**, not a Python emulation of a CPU. 
 
 ```bash
 git clone https://github.com/RianaMalhotra/RVCore-RISC-V-Processor-Design-Verification.git
-cd riscv-soc-verification
+cd RVCore-RISC-V-Processor-Design-Verification
 
 python3 -m venv .venv
 source .venv/bin/activate
 python -m pip install -r requirements.txt
 
-make lint                # Lint both SystemVerilog modules
-make test                # Run ALU + register-file tests
+make lint                # Lint the SystemVerilog modules
+make test                # Run all unit and integration tests
 make test-alu            # Run only ALU tests
 make test-register-file  # Run only register-file tests
 make test-decoder        # Run only decoder tests
+make test-rv32i-differential # M10 seeded reference-model scoreboard (PR #17)
+make trace               # Export the RTL-driven visualizer trace
 ```
 
 No FPGA, development board, or other physical hardware is needed.
@@ -158,19 +160,19 @@ riscv-soc-verification/
 - [x] **Milestone 5 — Instruction memory:** Automatic fetch and stored-program execution.
 - [x] **Milestone 6 — Control flow:** Branches, JAL and JALR.
 - [x] **Milestone 7 — Data memory:** Byte/halfword/word loads and stores; CI verified.
-- [ ] **Milestone 8 — Complete RV32I integer instructions:** Shifts, comparisons, LUI/AUIPC, and unified CPU.
-- [ ] **Milestone 9 — [Interactive CPU visualizer](https://github.com/RianaMalhotra/RVCore-RISC-V-Processor-Design-Verification/issues/14):** Export actual RTL execution traces and build a React/Vite step-through datapath, register and memory viewer.
-- [ ] **Milestone 10 — Verification depth:** Assertions, functional coverage, full regression and negative tests.
+- [x] **Milestone 8 — RV32I integer execution:** Shifts, comparisons, LUI/AUIPC, and unified CPU integration (subset limitations noted below).
+- [x] **Milestone 9 — [Interactive CPU visualizer](https://github.com/RianaMalhotra/RVCore-RISC-V-Processor-Design-Verification/issues/14):** Recorded RTL execution traces, React/Vite step-through datapath and register viewer; richer memory inspection remains future work.
+- [ ] **Milestone 10 — Verification depth (in progress, [PR #17](https://github.com/RianaMalhotra/RVCore-RISC-V-Processor-Design-Verification/pull/17)):** Seeded integer differential scoreboard, operation stimulus counts, negative tests; CPU-level scoreboard, assertions and coverage closure still planned.
 - [ ] **Milestone 11 — DFT/DFX exploration:** Scan chains, BIST and fault-injection experiments.
 - [ ] **Milestone 12 — Final validation and demo:** End-to-end demonstration, reproducible instructions and portfolio documentation.
 
-**Status: 7 of 12 milestones complete.** The visualizer will replay measured simulator traces, not simulate a second CPU implementation.
+**Status: 9 of 12 milestones merged.** Milestone 10 is under review; the visualizer replays measured simulator traces rather than emulating the CPU in JavaScript.
 ## Engineering decisions and limitations
 
 - **Modular development:** Verify individual blocks before integrating a processor, so failures are easier to isolate.
 - **Deterministic random tests:** Fixed seeds make failures reproducible.
 - **Architectural vs implementation behavior:** `x0` semantics follow RV32I; clearing the register file on reset is a deliberate implementation choice.
-- **Scope honesty:** No processor integration, FPGA deployment, measured functional coverage, or scan/BIST implementation is claimed at this stage.
+- **Scope honesty:** The integrated CPU and trace visualizer run in simulation; no FPGA deployment, ISA compliance certification, functional-coverage closure, or scan/BIST implementation is claimed.
 
 ## Author
 
@@ -227,7 +229,7 @@ The new `rtl/core/cpu_system_memory.sv` integrates memory into the existing arit
 
 **Limitations:** This is a simulation-only CPU prototype. There is no bus, cache, MMU, exception handler, or full RV32I support yet. Invalid memory accesses halt the CPU instead of raising architecturally compliant exceptions.
 
-## Milestone 9 — RTL execution visualizer (in progress)
+## Milestone 9 — RTL execution visualizer (merged)
 
 A React/Vite dashboard replays **observed Verilator/cocotb execution cycles** from the integrated RV32I integer program. The visualizer shows the PC, fetched instruction, decoded operation, active datapath, register writeback, and all 32 registers after each cycle. It supports step forward/backward, play/pause, reset, and timeline scrubbing. No separate CPU emulator is used.
 
@@ -241,3 +243,16 @@ npm run dev
 ```
 
 Open the local URL printed by Vite (normally http://127.0.0.1:5173). **Run `make trace` first**: the generated `visualizer/public/trace.json` is intentionally ignored by Git. CI checks trace generation, schema, and the production frontend build. The trace is a recorded simulation, **not live FPGA or ASIC execution**. This first demo uses `programs/rv32i_integer.hex`; additional programs and richer memory-state inspection are planned.
+
+## Milestone 10 — Advanced verification (in progress)
+
+[PR #17](https://github.com/RianaMalhotra/RVCore-RISC-V-Processor-Design-Verification/pull/17) adds an independent Python reference-model scoreboard for **21 supported RV32I integer operations**. The new cocotb suite exercises **1,701 directed operand-boundary comparisons**, **2,100 seeded randomized comparisons**, and **64 invalid/unsupported instruction checks**. A per-operation stimulus histogram and fixed seed (`0x20261025`) make the test reproducible. These numbers describe the **implemented test workload**, not verified pass counts or functional-coverage closure; PR CI must pass before merging.
+
+Run from the feature branch with an activated Python environment:
+
+```bash
+make test-rv32i-differential  # Targeted integer reference-model verification
+make test                    # Full regression, including the new suite
+```
+
+See [Milestone 10 verification methodology and limitations](docs/m10_verification.md). Next work: CPU-level architectural register/memory scoreboarding, branch and load/store scenarios, control assertions, and measured coverage closure.
