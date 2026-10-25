@@ -35,7 +35,10 @@ The seeded RV32I differential regression produces a machine-readable [coverage r
 
 ### Verified browser screenshot
 
-The [real Playwright screenshot from the successful 11-cycle load/store run](https://github.com/RianaMalhotra/RVCore-RISC-V-Processor-Design-Verification/actions/runs/40222441486) is available under **Artifacts → rvcore-visualizer-screenshot**. It shows the halted state at cycle 11/11, register values, and the memory byte view. GitHub Actions artifacts expire; save this image as `docs/images/rvcore-load-store-visualizer.png` and embed it below for a permanent portfolio screenshot.
+![RVCore RTL load/store visualizer at cycle 11/11, halted, with registers and memory](docs/images/rvcore-load-store-visualizer.png)
+
+
+The [real Playwright screenshot from the successful 11-cycle load/store run](https://github.com/RianaMalhotra/RVCore-RISC-V-Processor-Design-Verification/actions/runs/40222441486) is available under **Artifacts → rvcore-visualizer-screenshot**. It shows the halted state at cycle 11/11, register values, and the memory byte view. The screenshot is also committed permanently to this repository at `docs/images/rvcore-load-store-visualizer.png`.
 
 The screenshot is from a real browser run against the cocotb/Verilator-generated trace; it is not a synthetic rendering. Browser smoke tests cover program switching, navigation, slider, halt, and memory-panel visibility.
 
