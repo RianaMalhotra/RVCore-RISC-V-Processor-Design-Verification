@@ -14,7 +14,7 @@
 
 This project is a hands-on exploration of **digital RTL design, processor architecture, and hardware verification**. I implement synthesizable hardware modules in SystemVerilog, test their behavior against Python reference models with cocotb, and run automated regressions through GitHub Actions. The longer-term goal is a small RV32I-based CPU followed by design-for-test (DFT) experiments.
 
-> **Current scope (October 2026):** A simulation-only, single-cycle RV32I-subset CPU integrates integer arithmetic/shifts/comparisons, branches/jumps, and byte/halfword/word loads and stores. A React/Vite visualizer replays recorded Verilator/cocotb execution. **Milestone 10 simulation verification has expanded to randomized streams, architectural scoreboards, and fault assertions; Milestone 11 adds standalone scan-chain, fault-injection, and LFSR/MISR BIST experiments.** This is not a complete RV32I-compliant SoC; system instructions, exceptions, interrupts, and external interfaces are not implemented.
+> **Current scope (October 2026):** A simulation-only, single-cycle RV32I-subset CPU integrates integer arithmetic/shifts/comparisons, branches/jumps, and byte/halfword/word loads and stores. A React/Vite visualizer replays recorded Verilator/cocotb execution. **Milestone 10 simulation verification has expanded to randomized streams, architectural scoreboards, and fault assertions; Milestone 11 adds standalone scan-chain, fault-injection, and LFSR/MISR BIST and signature-based fault-detection experiments.** This is not a complete RV32I-compliant SoC; system instructions, exceptions, interrupts, and external interfaces are not implemented.
 
 ## At a glance
 
@@ -99,7 +99,8 @@ A passing GitHub Actions run demonstrates that **the checks for that commit pass
 - [Parameterized scan chain](rtl/dft/scan_chain.sv): 8-bit default with functional capture, serial shift, scan-out, and synchronous reset; verified by `make test-scan-chain`.
 - [Scan stuck-at fault model](rtl/dft/scan_fault_harness.sv): selectable bit and stuck-at-0/1 on the **observable output**. The test sensitizes and detects all 16 modeled output faults (8 positions × 2 polarities), and checks non-sensitizing patterns. Run `make test-scan-stuck-at`.
 - [LFSR/MISR BIST engine](rtl/dft/bist_engine.sv): deterministic 8-bit pseudo-random patterns and response-signature compaction against a toy combinational circuit, checked cycle-by-cycle with an independent Python model. Run `make test-bist`.
-- [BIST details and limitations](docs/m11_bist.md) · [Fault model and limitations](docs/m11_fault_injection.md) · [Scan-chain design notes](docs/m11_scan_chain.md).
+- [BIST signature fault detection](rtl/dft/bist_fault_engine.sv): injects 16 response stuck-at-0/1 fault cases into a toy circuit, checks MISR signatures against a reference model, and reports detected versus aliased faults. Run `make test-bist-faults`.
+- [BIST fault detection notes](docs/m11_bist_fault_detection.md) · [BIST details and limitations](docs/m11_bist.md) · [Fault model and limitations](docs/m11_fault_injection.md) · [Scan-chain design notes](docs/m11_scan_chain.md).
 
 These are standalone educational experiments. The CPU is **not scan-inserted**, and modeled output-fault detection and toy-circuit BIST are **not** equivalent to silicon fault coverage, internal stuck-at coverage, CPU BIST integration, or ATPG qualification.
 
@@ -137,6 +138,7 @@ make test-rv32i-differential # M10 seeded reference-model scoreboard
 make test-scan-chain       # M11 functional capture and serial scan
 make test-scan-stuck-at    # M11 modeled stuck-at-0/1 fault detection
 make test-bist           # M11 LFSR test patterns and MISR signatures
+make test-bist-faults    # M11 response stuck-at fault signature detection
 make trace               # Export the RTL-driven visualizer trace
 ```
 
