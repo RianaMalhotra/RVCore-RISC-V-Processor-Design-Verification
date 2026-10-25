@@ -55,6 +55,7 @@ async def export_trace(dut):
             "rs2": (word >> 20) & 31, "rd": rd,
             "rs1_value": value(dut.rs1_value), "rs2_value": value(dut.rs2_value),
             "write_enable": we and rd != 0, "write_data": data,
+            "alu_result": value(dut.alu_result),
             "memory_load": bool(value(dut.memory_load)),
             "memory_store": bool(value(dut.memory_store)),
             "memory_address": value(dut.memory_address),
