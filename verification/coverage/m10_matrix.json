@@ -43,7 +43,8 @@
     },
     {
       "id": "cpu_misaligned_store",
-      "status": "open"
+      "status": "implemented_pending_ci",
+      "evidence": "test_cpu_store_fault.py"
     },
     {
       "id": "cpu_misaligned_branch",
