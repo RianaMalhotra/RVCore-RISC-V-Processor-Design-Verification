@@ -26,7 +26,7 @@ This project is a hands-on exploration of **digital RTL design, processor archit
 | **Verification** | Directed + seeded randomized cocotb tests with Python reference models |
 | **Automation** | Verilator lint and simulation, GNU Make, GitHub Actions CI |
 | **Hardware required** | None—runs entirely in software |
-| **Current milestone** | Milestones 1–6 verified; Milestone 7 load/store in review |
+| **Current milestone** | Milestones 1–7 merged and CI verified |
 
 ## Architecture
 
@@ -218,7 +218,7 @@ The stored `programs/control_flow.hex` executes a decrementing loop and skips an
 
 **Scope:** This is still a small arithmetic-and-control-flow CPU prototype, not a complete RV32I core. Loads/stores, data memory, system instructions, exceptions, and interrupts are not implemented. The existing timing diagram remains a register-file timing illustration.
 
-## Milestone 7 — Data memory and RV32I load/store (PR; CI pending)
+## Milestone 7 — Data memory and RV32I load/store (completed, CI verified)
 
 Added `rtl/core/data_memory.sv`: 256-byte default little-endian data memory, supporting `LB`, `LBU`, `LH`, `LHU`, `LW`, `SB`, `SH`, and `SW`. Byte and halfword reads sign-extend or zero-extend as appropriate. Misaligned, out-of-range, or invalid accesses raise a fault and do not commit stores.
 
