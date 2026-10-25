@@ -33,3 +33,7 @@ The `test-cpu-arch-scoreboard` target runs the stored `programs/load_store.hex` 
 ```bash
 make test-cpu-arch-scoreboard
 ```
+
+## Branch and jump CPU architectural scoreboard (third increment)
+
+`make test-cpu-control-scoreboard` runs the existing stored branch-loop/JAL program against a Python reference model that independently decodes B/J/I immediates, computes taken/not-taken branch targets, tracks registers and link writeback, and checks instruction fetch, PC, illegal/halt, and writeback at each clock step. The test requires two taken BNEs, one not-taken BNE, one JAL, and the illegal sentinel; it checks that the skipped instruction is not executed. This is deterministic scenario coverage, **not** measured functional coverage closure. JALR is modeled but not exercised by this stored program; randomized programs, fault injection, and assertions remain future work.
