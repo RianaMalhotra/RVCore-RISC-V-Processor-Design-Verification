@@ -14,18 +14,18 @@
 
 This project is a hands-on exploration of **digital RTL design, processor architecture, and hardware verification**. I implement synthesizable hardware modules in SystemVerilog, test their behavior against Python reference models with cocotb, and run automated regressions through GitHub Actions. The longer-term goal is a small RV32I-based CPU followed by design-for-test (DFT) experiments.
 
-> **Current scope (October 2026):** A simulation-only, single-cycle RV32I-subset CPU integrates integer arithmetic/shifts/comparisons, branches/jumps, and byte/halfword/word loads and stores. A React/Vite visualizer replays recorded Verilator/cocotb execution. **Milestone 10 verification expansion is in progress on PR #17.** This is not a complete RV32I-compliant SoC; system instructions, exceptions, interrupts, and external interfaces are not implemented.
+> **Current scope (October 2026):** A simulation-only, single-cycle RV32I-subset CPU integrates integer arithmetic/shifts/comparisons, branches/jumps, and byte/halfword/word loads and stores. A React/Vite visualizer replays recorded Verilator/cocotb execution. **Milestone 10 simulation verification has expanded to randomized streams, architectural scoreboards, and fault assertions; Milestone 11 adds standalone scan-chain and fault-injection experiments.** This is not a complete RV32I-compliant SoC; system instructions, exceptions, interrupts, and external interfaces are not implemented.
 
 ## At a glance
 
 | | |
 | --- | --- |
-| **Focus** | RTL design, digital verification, RISC-V fundamentals, future DFT/DFX exploration |
+| **Focus** | RTL design, digital verification, RISC-V fundamentals, standalone DFT/DFX experiments |
 | **Implemented hardware** | 32-bit ALU; 32-register file; instruction decode/fetch; RV32I integer execution; branch/jump control; data memory; integrated CPU |
-| **Verification** | Directed cocotb unit/integration tests; seeded differential integer scoreboard and operation stimulus counts in PR #17 |
+| **Verification** | Directed cocotb unit/integration tests; differential scoreboards, CPU fault assertions, scan-chain tests, and modeled stuck-at output fault detection |
 | **Automation** | Verilator lint and simulation, GNU Make, GitHub Actions CI |
 | **Hardware required** | None—runs entirely in software |
-| **Current milestone** | Milestones 1–9 merged; Milestone 10 verification depth in progress (PR #17) |
+| **Current milestone** | Milestones 1–10 core simulation regression merged; Milestone 11 DFT/DFX experiments underway |
 
 ## Architecture
 
@@ -94,6 +94,14 @@ Rather than relying on visual waveform inspection alone, each module is tested b
 
 A passing GitHub Actions run demonstrates that **the checks for that commit passed**; it does **not** establish full ISA compliance, coverage closure, or silicon readiness. The Milestone 10 scoreboard tracks exercised operation categories, **not** formal functional-coverage closure. See [the Milestone 10 verification plan](docs/m10_verification.md) and [the original verification plan](docs/verification_plan.md). See [the verification plan](docs/verification_plan.md) for details.
 
+## DFT/DFX experiments (Milestone 11)
+
+- [Parameterized scan chain](rtl/dft/scan_chain.sv): 8-bit default with functional capture, serial shift, scan-out, and synchronous reset; verified by `make test-scan-chain`.
+- [Scan stuck-at fault model](rtl/dft/scan_fault_harness.sv): selectable bit and stuck-at-0/1 on the **observable output**. The test sensitizes and detects all 16 modeled output faults (8 positions × 2 polarities), and checks non-sensitizing patterns. Run `make test-scan-stuck-at`.
+- [Fault model and limitations](docs/m11_fault_injection.md) · [Scan-chain design notes](docs/m11_scan_chain.md).
+
+These are standalone educational experiments. The CPU is **not scan-inserted**, and modeled output-fault detection is **not** equivalent to silicon fault coverage, internal stuck-at coverage, or ATPG qualification.
+
 ## Technology stack
 
 | Tool | Role in this project |
@@ -124,7 +132,9 @@ make test                # Run all unit and integration tests
 make test-alu            # Run only ALU tests
 make test-register-file  # Run only register-file tests
 make test-decoder        # Run only decoder tests
-make test-rv32i-differential # M10 seeded reference-model scoreboard (PR #17)
+make test-rv32i-differential # M10 seeded reference-model scoreboard
+make test-scan-chain       # M11 functional capture and serial scan
+make test-scan-stuck-at    # M11 modeled stuck-at-0/1 fault detection
 make trace               # Export the RTL-driven visualizer trace
 ```
 
