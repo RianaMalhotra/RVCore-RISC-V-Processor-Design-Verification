@@ -1,7 +1,6 @@
 <p align="center"><img src="docs/images/readme-overview-v3.svg" alt="Updated RISC-V SoC architecture, milestone status, timing diagram, operation tables and verification flow" width="100%"></p>
 
-> **Visual overview:** Updated through the completed and CI-verified Milestone 6 branches/jumps integration. The timing diagrams, operation tables, and verification flow remain included. [Original reference image](docs/images/reference.jpeg) is preserved. Detailed design explanations, tests, and setup instructions follow below.
-
+> **Visual overview** 
 ---
 
 # RISC-V SoC Design & Verification
