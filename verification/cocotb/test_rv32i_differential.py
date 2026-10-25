@@ -4,6 +4,8 @@ The oracle uses instruction semantics, not DUT result signals. Coverage counts
 are observed test stimuli (not a claim of complete ISA functional coverage).
 """
 import random
+import json
+from pathlib import Path
 from collections import Counter
 
 import cocotb
@@ -71,6 +73,8 @@ async def check(dut, instruction, a, b, pc, expected_valid, expected, context):
 async def seeded_differential_and_coverage(dut):
     rng = random.Random(SEED)
     coverage = Counter()
+    operand_bins = Counter()
+    validity_bins = Counter()
     boundaries = (0, 1, 31, 32, 0x7FFFFFFF, 0x80000000, 0xFFFFFFFF, 0x55555555, 0xAAAAAAAA)
     # Exercise every operation with all boundary source values.
     for op in ALL_OPS:
@@ -81,6 +85,9 @@ async def seeded_differential_and_coverage(dut):
                 insn = encode(op, imm)
                 await check(dut, insn, a, b, pc, True, reference(op, a, b, imm if op not in ("SLLI", "SRLI", "SRAI") else (imm & 31), pc), f"directed {op}")
                 coverage[op] += 1
+                for operand in (a, b):
+                    operand_bins['zero' if operand == 0 else 'negative' if operand & 0x80000000 else 'positive'] += 1
+                validity_bins['legal'] += 1
     # Randomized operands, signed immediates, shifts, and PC wraparound.
     for index in range(2100):
         op = ALL_OPS[index % len(ALL_OPS)]
@@ -91,6 +98,9 @@ async def seeded_differential_and_coverage(dut):
         await check(dut, insn, a, b, pc, True, reference(op, a, b, imm, pc),
                     f"random seed={SEED} iteration={index} op={op}")
         coverage[op] += 1
+        for operand in (a, b):
+            operand_bins['zero' if operand == 0 else 'negative' if operand & 0x80000000 else 'positive'] += 1
+        validity_bins['legal'] += 1
     # Unsupported encodings must not assert valid, even when operands vary.
     invalid = [
         encode("ADD", 0) | (1 << 25),          # M extension
@@ -107,7 +117,23 @@ async def seeded_differential_and_coverage(dut):
             await check(dut, insn, rng.getrandbits(32), rng.getrandbits(32),
                         rng.getrandbits(32), False, None, "negative")
             coverage["illegal"] += 1
+            validity_bins["illegal"] += 1
     assert all(coverage[op] >= 100 for op in ALL_OPS)
     assert coverage["illegal"] == 64
     dut._log.info("M10 deterministic differential coverage: seed=%d; total=%d; per-op=%s",
                   SEED, sum(coverage.values()), dict(sorted(coverage.items())))
+
+    # Measured stimulus bins: generated only after all oracle checks succeed.
+    report = {
+        "schema_version": 1,
+        "seed": SEED,
+        "scope": "rv32i_integer combinational differential tests only",
+        "operation_counts": dict(sorted(coverage.items())),
+        "operand_sign_bins": dict(sorted(operand_bins.items())),
+        "validity_bins": dict(sorted(validity_bins.items())),
+        "operation_bin_coverage": {"hit": sum(coverage[op] > 0 for op in ALL_OPS), "total": len(ALL_OPS)},
+        "limitations": "Stimulus counts, not RTL code coverage, branch coverage, cross coverage, or full ISA closure",
+    }
+    output = Path("verification/reports/rv32i_functional_coverage.json")
+    output.parent.mkdir(parents=True, exist_ok=True)
+    output.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n")

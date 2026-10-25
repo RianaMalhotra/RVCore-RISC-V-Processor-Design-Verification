@@ -2,7 +2,7 @@ import cocotb
 from cocotb.triggers import Timer
 
 async def settle():
-    await Timer(2, unit="ns")
+    await Timer(2, units="ns")
 
 async def tick(dut):
     dut.clk.value = 0
