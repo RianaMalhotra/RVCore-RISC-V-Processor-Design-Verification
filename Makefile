@@ -2,11 +2,14 @@ SIM ?= verilator
 TOPLEVEL_LANG ?= verilog
 export PYTHONPATH := $(abspath verification/cocotb):$(PYTHONPATH)
 
-.PHONY: trace test test-rv32i-system test-rv32i-integer test-alu test-register-file test-decoder test-cpu test-system test-control-flow test-control-system test-data-memory test-memory-system lint
-test: test-rv32i-system test-rv32i-integer test-alu test-register-file test-decoder test-cpu test-system test-control-flow test-control-system test-data-memory test-memory-system
+.PHONY: test-rv32i-differential trace test test-rv32i-system test-rv32i-integer test-alu test-register-file test-decoder test-cpu test-system test-control-flow test-control-system test-data-memory test-memory-system lint
+test: test-rv32i-differential test-rv32i-system test-rv32i-integer test-alu test-register-file test-decoder test-cpu test-system test-control-flow test-control-system test-data-memory test-memory-system
 
 trace:
 	$(MAKE) -f $(shell cocotb-config --makefiles)/Makefile.sim SIM=$(SIM) TOPLEVEL_LANG=$(TOPLEVEL_LANG) VERILOG_SOURCES="$(abspath rtl/core/alu.sv) $(abspath rtl/core/register_file.sv) $(abspath rtl/core/instruction_decoder.sv) $(abspath rtl/core/instruction_memory.sv) $(abspath rtl/core/cpu_control_flow.sv) $(abspath rtl/core/data_memory.sv) $(abspath rtl/core/rv32i_integer.sv) $(abspath rtl/core/cpu_system_memory.sv) $(abspath rtl/core/cpu_system_rv32i.sv)" TOPLEVEL=cpu_system_rv32i COCOTB_TEST_MODULES=test_trace_export MODULE=test_trace_export TRACE_OUTPUT=$(abspath visualizer/public/trace.json) SIM_BUILD=sim_build/rv32i_trace
+
+test-rv32i-differential:
+	$(MAKE) -f $(shell cocotb-config --makefiles)/Makefile.sim SIM=$(SIM) TOPLEVEL_LANG=$(TOPLEVEL_LANG) VERILOG_SOURCES="$(abspath rtl/core/rv32i_integer.sv)" TOPLEVEL=rv32i_integer COCOTB_TEST_MODULES=test_rv32i_differential MODULE=test_rv32i_differential SIM_BUILD=sim_build/rv32i_differential
 
 test-rv32i-system:
 	$(MAKE) -f $(shell cocotb-config --makefiles)/Makefile.sim SIM=$(SIM) TOPLEVEL_LANG=$(TOPLEVEL_LANG) VERILOG_SOURCES="$(abspath rtl/core/alu.sv) $(abspath rtl/core/register_file.sv) $(abspath rtl/core/instruction_decoder.sv) $(abspath rtl/core/instruction_memory.sv) $(abspath rtl/core/cpu_control_flow.sv) $(abspath rtl/core/data_memory.sv) $(abspath rtl/core/rv32i_integer.sv) $(abspath rtl/core/cpu_system_memory.sv) $(abspath rtl/core/cpu_system_rv32i.sv)" TOPLEVEL=cpu_system_rv32i COCOTB_TEST_MODULES=test_cpu_system_rv32i MODULE=test_cpu_system_rv32i SIM_BUILD=sim_build/rv32i_system
