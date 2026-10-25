@@ -15,7 +15,8 @@ test('RTL integer and load/store replay with navigation and memory', async ({pag
   await expect(page.getByText('Cycle 2 / 11')).toBeVisible();
   await page.getByRole('button', {name: '↺ Reset'}).click();
   await expect(page.getByText('Cycle 1 / 11')).toBeVisible();
-  await page.getByRole('slider', {name: 'Cycle'}).fill('10');
+  await page.getByRole('slider', {name: 'Cycle'}).focus();
+  await page.keyboard.press('End');
   await expect(page.getByText('Cycle 11 / 11')).toBeVisible();
   await expect(page.getByText('HALTED')).toBeVisible();
   await expect(page.getByRole('heading', {name: 'Memory after cycle'})).toBeVisible();
