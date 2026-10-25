@@ -23,6 +23,11 @@ module cpu_system_memory #(
     logic [31:0] mem_offset, mem_address, mem_read;
     logic [2:0] mem_funct3;
     logic [6:0] opcode;
+    logic [31:0] integer_result;
+    logic integer_valid;
+    logic integer_opcode;
+    assign integer_opcode = opcode == 7'b0110011 || opcode == 7'b0010011 || opcode == 7'b0110111 || opcode == 7'b0010111;
+    rv32i_integer integer_execute (.instruction(instruction), .pc(pc), .rs1_value(rd1), .rs2_value(rd2), .result(integer_result), .valid(integer_valid));
     assign opcode = instruction[6:0];
     assign mem_load = opcode == 7'b0000011;
     assign mem_store = opcode == 7'b0100011;
@@ -51,9 +56,9 @@ module cpu_system_memory #(
         .control_flow(control_flow), .legal(cf_legal), .taken(taken),
         .link(link), .offset(offset), .jalr(jalr)
     );
-    assign illegal = (mem_load || mem_store) ? mem_fault : (control_flow ? !cf_legal : decode_illegal);
-    assign effective_write = !halted && !illegal && !(control_flow && taken && next_pc[1:0] != 2'b00) && (reg_write || link || mem_load);
-    assign write_data = link ? pc + 32'd4 : (mem_load ? mem_read : alu_result);
+    assign illegal = (mem_load || mem_store) ? mem_fault : (control_flow ? !cf_legal : (integer_opcode ? !integer_valid : decode_illegal));
+    assign effective_write = !halted && !illegal && !(control_flow && taken && next_pc[1:0] != 2'b00) && (reg_write || link || mem_load || (integer_opcode && integer_valid));
+    assign write_data = link ? pc + 32'd4 : (mem_load ? mem_read : (integer_opcode ? integer_result : alu_result));
     register_file rf (
         .clk(clk), .rst(rst), .we(effective_write),
         .rs1(rs1), .rs2(rs2), .rd(rd), .wd(write_data),
