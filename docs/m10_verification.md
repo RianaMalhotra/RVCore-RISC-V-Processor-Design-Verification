@@ -37,3 +37,7 @@ make test-cpu-arch-scoreboard
 ## Branch and jump CPU architectural scoreboard (third increment)
 
 `make test-cpu-control-scoreboard` runs the existing stored branch-loop/JAL program against a Python reference model that independently decodes B/J/I immediates, computes taken/not-taken branch targets, tracks registers and link writeback, and checks instruction fetch, PC, illegal/halt, and writeback at each clock step. The test requires two taken BNEs, one not-taken BNE, one JAL, and the illegal sentinel; it checks that the skipped instruction is not executed. This is deterministic scenario coverage, **not** measured functional coverage closure. JALR is modeled but not exercised by this stored program; randomized programs, fault injection, and assertions remain future work.
+
+## Data-memory fault injection and safety invariants (fourth increment)
+
+`make test-data-memory-fault-invariants` initializes a known word, attempts seven rejected writes (misaligned halfword/word, out-of-range addresses, and invalid store encodings), and reads the word back after every rejected clock edge to assert **no unintended modification**. It also checks that an idle interface does not raise a fault even with invalid address/function inputs. The assertions are **cocotb temporal checks** against the RTL, not embedded SystemVerilog Assertions (SVA); SVA and full-memory atomicity proof remain future work. The test observes one protected word rather than every possible byte, and does not yet inject CPU-level misaligned branch targets.
