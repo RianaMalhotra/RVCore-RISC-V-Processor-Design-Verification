@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="960" viewBox="0 0 1200 960" role="img" aria-labelledby="title desc">
+<title id="title">RVCore RISC-V SoC — architecture, verification and DFT roadmap</title>
+<desc id="desc">Simulation-only RV32I subset CPU, Milestone 10 scoreboards and assertions, Milestone 11 scan-chain and BIST experiments. Milestone 12 remains planned.</desc>
+<defs><style>
+text{font-family:Arial,Helvetica,sans-serif;fill:#e8effa}.muted{fill:#a9bbd4}.head{font-size:35px;font-weight:700}.sub{font-size:20px;font-weight:700}.body{font-size:16px}.tiny{font-size:14px}.pill{font-size:13px;font-weight:700}.line{stroke:#7798c7;stroke-width:2.5;fill:none}.card{fill:#15263f;stroke:#355276;stroke-width:1.5}
+</style><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#7798c7"/></marker></defs>
+<rect width="1200" height="960" fill="#0b1729"/>
+<rect x="32" y="26" width="1136" height="112" rx="17" fill="#15263f"/>
+<text x="58" y="75" class="head">RVCore  /  RISC-V SoC Design &amp; Verification</text>
+<text x="58" y="108" class="body muted">SystemVerilog RTL  •  cocotb + Verilator  •  GitHub Actions  •  simulation only</text>
+<rect x="965" y="83" width="174" height="33" rx="16" fill="#214b3e"/><text x="982" y="104" class="pill" fill="#b7f5d3">M1–M10 merged</text>
+<text x="42" y="184" class="sub">PROCESSOR DATAPATH  /  RV32I SUBSET</text>
+<rect x="35" y="204" width="1130" height="214" rx="16" class="card"/>
+<g><rect x="57" y="252" width="128" height="91" rx="12" fill="#294363"/><rect x="223" y="252" width="161" height="91" rx="12" fill="#294363"/><rect x="421" y="252" width="166" height="91" rx="12" fill="#294363"/><rect x="624" y="252" width="155" height="91" rx="12" fill="#294363"/><rect x="816" y="252" width="141" height="91" rx="12" fill="#294363"/><rect x="994" y="252" width="148" height="91" rx="12" fill="#294363"/></g>
+<g class="body" text-anchor="middle"><text x="121" y="286">PC + fetch</text><text x="121" y="309" class="tiny muted">instructions</text><text x="303" y="286">Decoder</text><text x="303" y="309" class="tiny muted">control</text><text x="504" y="286">Register file</text><text x="504" y="309" class="tiny muted">32 × 32-bit</text><text x="701" y="286">32-bit ALU</text><text x="701" y="309" class="tiny muted">integer ops</text><text x="886" y="286">Data memory</text><text x="886" y="309" class="tiny muted">load / store</text><text x="1068" y="286">Control flow</text><text x="1068" y="309" class="tiny muted">branch / jump</text></g>
+<g class="line" marker-end="url(#arrow)"><path d="M185 297 H220"/><path d="M384 297 H418"/><path d="M587 297 H621"/><path d="M779 297 H813"/><path d="M957 297 H991"/></g>
+<text x="59" y="382" class="tiny muted">Single-cycle CPU • arithmetic, shifts, comparisons, LUI/AUIPC, branches, jumps, byte/halfword/word memory</text>
+<text x="42" y="465" class="sub">MILESTONE 10  /  VERIFICATION DEPTH</text>
+<rect x="35" y="482" width="1130" height="165" rx="16" class="card"/>
+<g><rect x="57" y="511" width="345" height="104" rx="12" fill="#1d3854"/><rect x="427" y="511" width="345" height="104" rx="12" fill="#1d3854"/><rect x="797" y="511" width="345" height="104" rx="12" fill="#1d3854"/></g>
+<g class="body"><text x="75" y="542" font-weight="700">Seeded differential tests</text><text x="75" y="570" class="tiny muted">Python reference model</text><text x="75" y="592" class="tiny muted">integer + randomized streams</text><text x="445" y="542" font-weight="700">Architectural scoreboards</text><text x="445" y="570" class="tiny muted">register, memory, control flow</text><text x="445" y="592" class="tiny muted">committed CPU state comparisons</text><text x="815" y="542" font-weight="700">Fault assertions</text><text x="815" y="570" class="tiny muted">misaligned and invalid accesses</text><text x="815" y="592" class="tiny muted">directed negative tests</text></g>
+<text x="42" y="692" class="sub">MILESTONE 11  /  STANDALONE DFT &amp; DFX EXPERIMENTS</text>
+<rect x="35" y="710" width="1130" height="170" rx="16" class="card"/>
+<g><rect x="57" y="740" width="345" height="106" rx="12" fill="#203d3c"/><rect x="427" y="740" width="345" height="106" rx="12" fill="#203d3c"/><rect x="797" y="740" width="345" height="106" rx="12" fill="#203d3c"/></g>
+<g class="body"><text x="75" y="770" font-weight="700">Scan-chain prototype</text><text x="75" y="798" class="tiny muted">capture • shift • scan-out</text><text x="75" y="820" class="tiny muted">16 modeled output stuck-at faults</text><text x="445" y="770" font-weight="700">LFSR pattern generation</text><text x="445" y="798" class="tiny muted">deterministic 8-bit sequence</text><text x="445" y="820" class="tiny muted">toy combinational circuit</text><text x="815" y="770" font-weight="700">MISR signature analysis</text><text x="815" y="798" class="tiny muted">reference-model checked BIST</text><text x="815" y="820" class="tiny muted">response fault campaign: PR #30</text></g>
+<text x="44" y="916" class="tiny muted">No FPGA or silicon deployment • no CPU scan insertion • no ATPG / chip-level coverage claim • M12 final validation planned</text>
+</svg>
