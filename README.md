@@ -15,7 +15,7 @@
 
 This project is a hands-on exploration of **digital RTL design, processor architecture, and hardware verification**. I implement synthesizable hardware modules in SystemVerilog, test their behavior against Python reference models with cocotb, and run automated regressions through GitHub Actions. The longer-term goal is a small RV32I-based CPU followed by design-for-test (DFT) experiments.
 
-> **Current scope:** The **32-bit ALU**, **32 × 32-bit register file**, and **limited RV32I arithmetic decoder** are implemented as **independently tested modules**. They are **not yet wired into a CPU or a functioning SoC**. The diagrams distinguish implemented behavior from the planned processor.
+> **Current scope:** The **32-bit ALU**, **32 × 32-bit register file**, and **limited RV32I arithmetic decoder** are implemented as **independently tested modules**. They are wired into arithmetic and control-flow CPU prototypes; a data-memory integration is now in review. This is not a complete SoC.
 
 ## At a glance
 
@@ -26,23 +26,23 @@ This project is a hands-on exploration of **digital RTL design, processor archit
 | **Verification** | Directed + seeded randomized cocotb tests with Python reference models |
 | **Automation** | Verilator lint and simulation, GNU Make, GitHub Actions CI |
 | **Hardware required** | None—runs entirely in software |
-| **Current milestone** | Milestones 1–6 merged and CI verified |
+| **Current milestone** | Milestones 1–6 verified; Milestone 7 load/store in review |
 
 ## Architecture
 
 ### 1. Implemented modules and their interfaces
 
-The two blocks below **exist in the repository today**. The dotted line is a *conceptual future datapath connection*, **not a connection implemented in RTL**.
+These independently tested building blocks are now connected in the CPU integration modules. The illustration is a historical module-level view.
 
 ![Implemented ALU and register file blocks](docs/images/implemented-blocks.svg)
 
-**How the pieces will eventually work together:** An instruction will select two source registers. Their values will feed the ALU, which computes a result. Control logic will decide whether that result is written back to a destination register. **Instruction decoding, control, and these interconnections have not been implemented yet.**
+**How the pieces will eventually work together:** An instruction will select two source registers. Their values will feed the ALU, which computes a result. Control logic will decide whether that result is written back to a destination register. **Instruction decoding, control, and arithmetic interconnections are implemented in RTL.**
 
 ### 2. Planned processor architecture (future work)
 
 ![Conceptual future RV32I CPU datapath](docs/images/planned-cpu.svg)
 
-The planned diagram is **architectural intent**, not a claim that instructions can currently execute.
+The planned diagram is an architectural roadmap. The current CPU already executes arithmetic, branches and jumps, with load/store integration under review.
 
 ## How the implemented hardware works
 
@@ -217,3 +217,11 @@ The new `cpu_system_control` top-level integrates a `cpu_control_flow` decoder/c
 The stored `programs/control_flow.hex` executes a decrementing loop and skips an instruction with JAL. The cocotb suites `test_cpu_control_flow.py` and `test_cpu_system_control.py` test branch signedness, offsets, legal/illegal encodings, PC trace, and reset. Run `make test-control-flow`, `make test-control-system`, or `make test`.
 
 **Scope:** This is still a small arithmetic-and-control-flow CPU prototype, not a complete RV32I core. Loads/stores, data memory, system instructions, exceptions, and interrupts are not implemented. The existing timing diagram remains a register-file timing illustration.
+
+## Milestone 7 — Data memory and RV32I load/store (PR; CI pending)
+
+Added `rtl/core/data_memory.sv`: 256-byte default little-endian data memory, supporting `LB`, `LBU`, `LH`, `LHU`, `LW`, `SB`, `SH`, and `SW`. Byte and halfword reads sign-extend or zero-extend as appropriate. Misaligned, out-of-range, or invalid accesses raise a fault and do not commit stores.
+
+The new `rtl/core/cpu_system_memory.sv` integrates memory into the existing arithmetic/branch/jump CPU, computes effective addresses as `rs1 + signed 12-bit immediate`, and routes load data to register writeback. The existing CPU modules are retained for regression compatibility. The program `programs/load_store.hex` exercises stores and loads of all three sizes; cocotb unit and integration tests run with `make test-data-memory` and `make test-memory-system` (included in `make test`).
+
+**Limitations:** This is a simulation-only CPU prototype. There is no bus, cache, MMU, exception handler, or full RV32I support yet. Invalid memory accesses halt the CPU instead of raising architecturally compliant exceptions.
