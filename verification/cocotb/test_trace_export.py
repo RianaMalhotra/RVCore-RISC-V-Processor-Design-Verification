@@ -12,6 +12,8 @@ def mnemonic(word):
     opcode = word & 0x7f
     f3 = (word >> 12) & 7
     f7 = (word >> 25) & 0x7f
+    if opcode == 0x03: return {0:"LB",1:"LH",2:"LW",4:"LBU",5:"LHU"}.get(f3,"ILLEGAL")
+    if opcode == 0x23: return {0:"SB",1:"SH",2:"SW"}.get(f3,"ILLEGAL")
     if opcode == 0x37: return "LUI"
     if opcode == 0x17: return "AUIPC"
     if opcode == 0x13:
@@ -35,6 +37,9 @@ async def export_trace(dut):
     await tick(dut)
     dut.rst.value = 0
     registers = [0] * 32
+    memory = [0] * 256
+    is_load_store = os.getenv("TRACE_PROGRAM", "integer") == "load_store"
+    expected_cycles = 11 if is_load_store else 8
     cycles = []
     for index in range(64):
         await Timer(2, units="ns")
@@ -60,6 +65,14 @@ async def export_trace(dut):
         }
         if we and rd != 0:
             registers[rd] = data
+        # Memory snapshot reconstructed from observed successful RTL store events.
+        if event["memory_store"] and not illegal:
+            width = {0: 1, 1: 2, 2: 4}.get((word >> 12) & 7, 0)
+            address = event["memory_address"]
+            assert width and 0 <= address <= len(memory) - width
+            for byte in range(width):
+                memory[address + byte] = (event["memory_write_data"] >> (8 * byte)) & 255
+        event["memory_after"] = memory.copy()
         event["registers_after"] = registers.copy()
         cycles.append(event)
         await tick(dut)
@@ -67,9 +80,14 @@ async def export_trace(dut):
             cycles[-1]["halted_after"] = True
             break
     assert cycles[-1].get("halted_after"), "program must halt"
-    assert len(cycles) == 8, f"expected 7 instructions and halt, got {len(cycles)}"
-    assert registers[7] == 0x1018
+    assert len(cycles) == expected_cycles, f"expected {expected_cycles} cycles, got {len(cycles)}"
+    if is_load_store:
+        assert cycles[-1]["pc"] == 40
+        assert registers[7] == 0xFFFFFF80
+        assert memory[64:68] == [0x80, 0xFF, 0xFF, 0xFF]
+    else:
+        assert registers[7] == 0x1018
     path = Path(os.getenv("TRACE_OUTPUT", "visualizer/public/trace.json")).resolve()
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps({"schema_version":1,"source":"Verilator + cocotb RTL simulation","program":"programs/rv32i_integer.hex","cycles":cycles}, indent=2) + "\n")
+    path.write_text(json.dumps({"schema_version":1,"source":"Verilator + cocotb RTL simulation","program":("programs/load_store.hex" if is_load_store else "programs/rv32i_integer.hex"),"cycles":cycles}, indent=2) + "\n")
     dut._log.info("Exported %d observed cycles to %s", len(cycles), path)
