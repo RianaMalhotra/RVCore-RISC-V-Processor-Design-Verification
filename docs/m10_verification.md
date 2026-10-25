@@ -41,3 +41,9 @@ make test-cpu-arch-scoreboard
 ## Data-memory fault injection and safety invariants (fourth increment)
 
 `make test-data-memory-fault-invariants` initializes a known word, attempts seven rejected writes (misaligned halfword/word, out-of-range addresses, and invalid store encodings), and reads the word back after every rejected clock edge to assert **no unintended modification**. It also checks that an idle interface does not raise a fault even with invalid address/function inputs. The assertions are **cocotb temporal checks** against the RTL, not embedded SystemVerilog Assertions (SVA); SVA and full-memory atomicity proof remain future work. The test observes one protected word rather than every possible byte, and does not yet inject CPU-level misaligned branch targets.
+
+## Integrated CPU fault injection and temporal checks (fifth increment)
+
+`make test-cpu-fault-assertions` compiles a verification-only wrapper around the existing `cpu_system_memory` RTL, loading `programs/cpu_faults.hex`. The program sets an aligned base address, stores a word, then attempts a **misaligned LW**. Cocotb checks the fault and illegal signals, suppresses register writeback on the faulting instruction, confirms PC does not advance, checks halt remains sticky for four more clocks, and verifies reset recovery. The wrapper exposes existing internal commit/fault signals without changing the synthesizable CPU implementation.
+
+These are executable cocotb temporal assertions, **not IEEE SVA properties**. They cover one CPU-level fault scenario, not all misaligned branches/stores, invalid instructions, or complete memory noninterference. Additional fault matrices, synthesizable SVA-compatible property checks, and coverage closure remain future work.
