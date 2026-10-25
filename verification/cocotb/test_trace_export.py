@@ -84,7 +84,7 @@ async def export_trace(dut):
     if is_load_store:
         assert cycles[-1]["pc"] == 40
         assert registers[7] == 0xFFFFFF80
-        assert memory[64:68] == [0x80, 0xFF, 0xFF, 0xFF]
+        assert memory[64:72] == [0x80, 0x00, 0x80, 0xFF, 0x80, 0xFF, 0xFF, 0xFF]
     else:
         assert registers[7] == 0x1018
     path = Path(os.getenv("TRACE_OUTPUT", "visualizer/public/trace.json")).resolve()
