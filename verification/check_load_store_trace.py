@@ -12,6 +12,7 @@ mem = [0] * 256
 for index, event in enumerate(cycles):
     assert event["cycle"] == index + 1
     assert event["pc"] == index * 4
+    assert isinstance(event["alu_result"], int)
     assert len(event["registers_after"]) == 32
     assert len(event["memory_after"]) == 256
     if event["write_enable"]:
