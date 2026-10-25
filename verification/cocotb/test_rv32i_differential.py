@@ -39,7 +39,7 @@ def reference(op, a, b, imm, pc):
     if op in U_OPS:
         upper = imm & 0xFFFFF000
         return (upper if op == "LUI" else pc + upper) & MASK
-    rhs = (signed(imm) if op in I_OPS and op not in ("SLLI", "SRLI", "SRAI") else b) & MASK
+    rhs = (signed((imm & 0xFFF) | (0xFFFFF000 if imm & 0x800 else 0)) if op in I_OPS and op not in ("SLLI", "SRLI", "SRAI") else b) & MASK
     if op in ("ADDI", "ADD"): return (a + rhs) & MASK
     if op == "SUB": return (a - rhs) & MASK
     if op in ("SLL", "SLLI"): return (a << ((imm if op == "SLLI" else b) & 31)) & MASK
