@@ -226,3 +226,18 @@ Added `rtl/core/data_memory.sv`: 256-byte default little-endian data memory, sup
 The new `rtl/core/cpu_system_memory.sv` integrates memory into the existing arithmetic/branch/jump CPU, computes effective addresses as `rs1 + signed 12-bit immediate`, and routes load data to register writeback. The existing CPU modules are retained for regression compatibility. The program `programs/load_store.hex` exercises stores and loads of all three sizes; cocotb unit and integration tests run with `make test-data-memory` and `make test-memory-system` (included in `make test`).
 
 **Limitations:** This is a simulation-only CPU prototype. There is no bus, cache, MMU, exception handler, or full RV32I support yet. Invalid memory accesses halt the CPU instead of raising architecturally compliant exceptions.
+
+## Milestone 9 — RTL execution visualizer (in progress)
+
+A React/Vite dashboard replays **observed Verilator/cocotb execution cycles** from the integrated RV32I integer program. The visualizer shows the PC, fetched instruction, decoded operation, active datapath, register writeback, and all 32 registers after each cycle. It supports step forward/backward, play/pause, reset, and timeline scrubbing. No separate CPU emulator is used.
+
+From the repository root, after installing the existing simulation prerequisites:
+
+```bash
+make trace
+cd visualizer
+npm install
+npm run dev
+```
+
+Open the local URL printed by Vite (normally http://127.0.0.1:5173). **Run `make trace` first**: the generated `visualizer/public/trace.json` is intentionally ignored by Git. CI checks trace generation, schema, and the production frontend build. The trace is a recorded simulation, **not live FPGA or ASIC execution**. This first demo uses `programs/rv32i_integer.hex`; additional programs and richer memory-state inspection are planned.
