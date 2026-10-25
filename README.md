@@ -27,6 +27,10 @@ This project is a hands-on exploration of **digital RTL design, processor archit
 | **Hardware required** | None—runs entirely in software |
 | **Current milestone** | Milestones 1–10 merged; Milestone 11 scan-chain, output faults, and LFSR/MISR BIST merged; BIST fault campaign merged in PR #30 |
 
+## Milestone 12 — Measured functional coverage
+
+The seeded RV32I differential regression produces a machine-readable [coverage report](docs/m12_coverage.md) with **21/21 supported integer-operation stimulus bins**, 3,801 legal and 64 invalid instruction stimuli, and operand sign categories. CI checks these measured counts using `python3 verification/check_coverage.py`. These are **stimulus bins**, not full SoC, ISA, RTL code, or cross-coverage closure. Existing assertions and fault tests remain separate.
+
 ## Architecture
 
 ### 1. Implemented modules and their interfaces
