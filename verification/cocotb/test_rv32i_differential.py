@@ -136,4 +136,4 @@ async def seeded_differential_and_coverage(dut):
     }
     output = Path("verification/reports/rv32i_functional_coverage.json")
     output.parent.mkdir(parents=True, exist_ok=True)
-    output.write_text(json.dumps(report, indent=2, sort_keys=True) + "\\n")
+    output.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n")
