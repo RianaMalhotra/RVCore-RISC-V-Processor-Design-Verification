@@ -14,7 +14,7 @@ This report records **test-scenario coverage**, not a simulator-generated code/f
 | CPU-level misaligned store | Test added; awaiting CI | `test_cpu_store_fault.py` and `cpu_store_fault_harness.sv` |
 | CPU-level misaligned taken branch target | Test added; awaiting CI | `test_cpu_branch_fault.py` and `cpu_branch_fault_harness.sv` |
 | End-to-end JALR | Test added; awaiting CI | `test_cpu_jalr_end_to_end.py`: target bit clearing, signed offsets, link register, skipped instructions |
-| Randomized multi-instruction programs | Open | Expand architectural reference model |
+| Seeded randomized mixed ADDI/LW/SW instruction stream | Test added; awaiting CI | `test_cpu_random_stream.py` — 46 instructions plus illegal terminator; independent register/memory oracle |
 | Formal proof / coverage percentage | Open | Requires appropriate formal or coverage tooling |
 
 Machine-readable inventory: `verification/coverage/m10_matrix.json`. The inventory is manually curated and must be updated when tests change.
@@ -26,6 +26,7 @@ make test-cpu-fault-assertions
 make test-cpu-branch-fault
 make test-cpu-store-fault
 make test-cpu-jalr
+make test-cpu-random-stream
 make test
 ```
 
