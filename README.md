@@ -6,7 +6,7 @@
 
 # RISC-V SoC Design & Verification
 
-[![RTL Verification](https://github.com/RianaMalhotra/riscv-soc-verification/actions/workflows/rtl-ci.yml/badge.svg)](https://github.com/RianaMalhotra/riscv-soc-verification/actions/workflows/rtl-ci.yml)
+[![RTL Verification](https://github.com/RianaMalhotra/RVCore-RISC-V-Processor-Design-Verification/actions/workflows/rtl-ci.yml/badge.svg)](https://github.com/RianaMalhotra/RVCore-RISC-V-Processor-Design-Verification/actions/workflows/rtl-ci.yml)
 ![SystemVerilog](https://img.shields.io/badge/RTL-SystemVerilog-445a83)
 ![Verification](https://img.shields.io/badge/Verification-cocotb%20%2B%20Verilator-326d64)
 ![License](https://img.shields.io/badge/License-MIT-blue)
@@ -113,7 +113,7 @@ This is **hardware design expressed as code**, not a Python emulation of a CPU. 
 **Prerequisites:** Verilator, GNU Make, a C++ compiler, and Python with `venv` support. CI uses Ubuntu's system Python and [the pinned cocotb dependency](requirements.txt) for simulator compatibility. A Linux environment (including WSL on Windows) is recommended.
 
 ```bash
-git clone https://github.com/RianaMalhotra/riscv-soc-verification.git
+git clone https://github.com/RianaMalhotra/RVCore-RISC-V-Processor-Design-Verification.git
 cd riscv-soc-verification
 
 python3 -m venv .venv
@@ -152,18 +152,20 @@ riscv-soc-verification/
 
 ## Development roadmap
 
-- [x] **Milestone 1 — ALU:** Implement 32-bit arithmetic/logic and Python verification.
-- [x] **Milestone 2 — Register file:** Implement two-read/one-write 32-register storage and directed/randomized tests.
-- [x] **Verification infrastructure:** Configure Verilator lint, cocotb regression, and passing CI for the implemented modules.
-- [x] **Milestone 3 — RV32I decoder:** Implement and test a limited arithmetic instruction subset; additional instruction classes remain planned.
-- [x] **Milestone 4 — CPU datapath:** Add program counter, connect blocks, and execute a small RV32I subset in simulation.
-- [x] **Milestone 5 — Instruction memory and automatic fetch:** Load a hex program and execute arithmetic instructions from PC-addressed memory.
-- [ ] **Next — Verification depth:** Add assertions, functional coverage metrics, and integration-level regression.
-- [x] **Milestone 6 — Branches and jumps:** BEQ, BNE, BLT, BGE, BLTU, BGEU, JAL, JALR with loop execution.
-- [ ] **Future — DFT/DFX exploration:** Prototype scan-chain and built-in self-test (BIST) mechanisms with fault-injection tests.
+- [x] **Milestone 1 — ALU:** 32-bit arithmetic/logic with cocotb verification.
+- [x] **Milestone 2 — Register file:** 32 registers, dual reads, synchronous write, directed/randomized tests.
+- [x] **Milestone 3 — RV32I decoder:** Arithmetic instruction decoding and illegal-instruction tests.
+- [x] **Milestone 4 — CPU datapath:** PC, ALU, register file and writeback integration.
+- [x] **Milestone 5 — Instruction memory:** Automatic fetch and stored-program execution.
+- [x] **Milestone 6 — Control flow:** Branches, JAL and JALR.
+- [x] **Milestone 7 — Data memory:** Byte/halfword/word loads and stores; CI verified.
+- [ ] **Milestone 8 — Complete RV32I integer instructions:** Shifts, comparisons, LUI/AUIPC, and unified CPU.
+- [ ] **Milestone 9 — [Interactive CPU visualizer](https://github.com/RianaMalhotra/RVCore-RISC-V-Processor-Design-Verification/issues/14):** Export actual RTL execution traces and build a React/Vite step-through datapath, register and memory viewer.
+- [ ] **Milestone 10 — Verification depth:** Assertions, functional coverage, full regression and negative tests.
+- [ ] **Milestone 11 — DFT/DFX exploration:** Scan chains, BIST and fault-injection experiments.
+- [ ] **Milestone 12 — Final validation and demo:** End-to-end demonstration, reproducible instructions and portfolio documentation.
 
-Follow progress through [GitHub Issues](https://github.com/RianaMalhotra/riscv-soc-verification/issues) and [Actions](https://github.com/RianaMalhotra/riscv-soc-verification/actions).
-
+**Status: 7 of 12 milestones complete.** The visualizer will replay measured simulator traces, not simulate a second CPU implementation.
 ## Engineering decisions and limitations
 
 - **Modular development:** Verify individual blocks before integrating a processor, so failures are easier to isolate.
