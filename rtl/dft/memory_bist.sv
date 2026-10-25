@@ -48,7 +48,7 @@ module memory_bist #(
                 end
                 W0: begin
                     mem[address] <= '0;
-                    if (address == DEPTH-1) begin
+                    if (address == ADDR_W'(DEPTH - 1)) begin
                         address <= '0;
                         phase <= R0W1;
                     end else address <= address + 1'b1;
@@ -57,7 +57,7 @@ module memory_bist #(
                     comparisons <= comparisons + 1'b1;
                     if (observed != '0) errors <= errors + 1'b1;
                     mem[address] <= '1;
-                    if (address == DEPTH-1) begin
+                    if (address == ADDR_W'(DEPTH - 1)) begin
                         phase <= R1W0;
                     end else address <= address + 1'b1;
                 end
@@ -73,7 +73,7 @@ module memory_bist #(
                 R0: begin
                     comparisons <= comparisons + 1'b1;
                     if (observed != '0) errors <= errors + 1'b1;
-                    if (address == DEPTH-1) phase <= FINISH;
+                    if (address == ADDR_W'(DEPTH - 1)) phase <= FINISH;
                     else address <= address + 1'b1;
                 end
                 FINISH: begin
