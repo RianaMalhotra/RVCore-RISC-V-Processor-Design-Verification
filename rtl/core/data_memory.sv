@@ -36,7 +36,7 @@ module data_memory #(
             fault = !valid_kind ||
                 ((size_bytes == 3'd2) && address[0]) ||
                 ((size_bytes == 3'd4) && (address[1:0] != 2'b00)) ||
-                (address >= BYTES) || (address > (BYTES - size_bytes));
+                (address >= BYTES) || (address > (BYTES - int'(size_bytes)));
         read_data = 32'b0;
         if (read_en && !fault) begin
             case (size_bytes)
@@ -59,7 +59,7 @@ module data_memory #(
     end
     always_ff @(posedge clk) begin
         if (rst) begin
-            for (int i = 0; i < BYTES; i++) mem[i] <= 8'b0;
+            for (int i = 0; i < BYTES; i++) mem[i] = 8'b0;
         end else if (write_en && !fault) begin
             mem[address] <= write_data[7:0];
             if (size_bytes >= 2) mem[address+1] <= write_data[15:8];
