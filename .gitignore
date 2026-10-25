@@ -8,3 +8,7 @@ results.xml
 *.fst
 obj_dir/
 .DS_Store
+
+visualizer/node_modules/
+visualizer/dist/
+visualizer/public/trace.json
