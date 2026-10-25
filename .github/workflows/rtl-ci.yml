@@ -18,6 +18,8 @@ jobs:
         run: make lint
       - name: Verify ALU
         run: make test
+      - name: Validate measured functional coverage
+        run: python3 verification/check_coverage.py
       - name: Generate and verify RTL execution trace
         run: make trace
       - name: Validate trace schema
