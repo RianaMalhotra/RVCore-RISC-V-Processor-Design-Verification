@@ -31,6 +31,10 @@ This project is a hands-on exploration of **digital RTL design, processor archit
 
 The seeded RV32I differential regression produces a machine-readable [coverage report](docs/m12_coverage.md) with **21/21 supported integer-operation stimulus bins**, 3,801 legal and 64 invalid instruction stimuli, and operand sign categories. CI checks these measured counts using `python3 verification/check_coverage.py`. These are **stimulus bins**, not full SoC, ISA, RTL code, or cross-coverage closure. Existing assertions and fault tests remain separate.
 
+## Visualizer verification
+
+Run `make trace && python3 verification/check_trace.py`, then `cd visualizer && npm install && npm run dev`. The [trace validation guide](docs/visualizer_validation.md) explains what CI checks and which 11-instruction load/store visualizer acceptance criteria remain open. This is an observed RTL **simulation trace**, not hardware execution.
+
 ## Architecture
 
 ### 1. Implemented modules and their interfaces
