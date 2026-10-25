@@ -22,11 +22,11 @@ def mnemonic(word):
 
 async def tick(dut):
     dut.clk.value = 0
-    await Timer(2, unit="ns")
+    await Timer(2, units="ns")
     dut.clk.value = 1
-    await Timer(2, unit="ns")
+    await Timer(2, units="ns")
     dut.clk.value = 0
-    await Timer(2, unit="ns")
+    await Timer(2, units="ns")
 
 @cocotb.test()
 async def export_trace(dut):
@@ -37,7 +37,7 @@ async def export_trace(dut):
     registers = [0] * 32
     cycles = []
     for index in range(64):
-        await Timer(2, unit="ns")
+        await Timer(2, units="ns")
         pc = value(dut.pc)
         word = value(dut.instruction)
         illegal = bool(value(dut.illegal))
