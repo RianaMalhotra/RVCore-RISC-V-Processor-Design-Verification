@@ -10,9 +10,9 @@ This report records **test-scenario coverage**, not a simulator-generated code/f
 | Taken/untaken branch loop and JAL | Exercised | `test_cpu_control_scoreboard.py` |
 | Rejected memory stores preserve protected word | Exercised | `test_data_memory_fault_invariants.py` — 7 injected invalid stores |
 | CPU misaligned LW suppresses commit and halts | Exercised | `test_cpu_fault_assertions.py` |
-| Illegal/fault write suppression, halt PC stability, reset | SVA properties added; confirm CI | `verification/rtl/cpu_fault_harness.sv` with `EXTRA_ARGS=--assert` |
+| Illegal/fault write suppression, halt PC stability, reset | Exercised in passing CI | `verification/rtl/cpu_fault_harness.sv` with `EXTRA_ARGS=--assert` |
 | CPU-level misaligned store | Open | Add a stored program and memory side-effect check |
-| CPU-level misaligned branch/jump target | Open | Add negative target program |
+| CPU-level misaligned taken branch target | Test added; awaiting CI | `test_cpu_branch_fault.py` and `cpu_branch_fault_harness.sv` |
 | End-to-end JALR | Open | Add a stored-program test |
 | Randomized multi-instruction programs | Open | Expand architectural reference model |
 | Formal proof / coverage percentage | Open | Requires appropriate formal or coverage tooling |
@@ -23,6 +23,7 @@ Machine-readable inventory: `verification/coverage/m10_matrix.json`. The invento
 
 ```bash
 make test-cpu-fault-assertions
+make test-cpu-branch-fault
 make test
 ```
 

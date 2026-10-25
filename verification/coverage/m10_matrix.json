@@ -38,7 +38,7 @@
     },
     {
       "id": "sva_safety_properties",
-      "status": "implemented_pending_ci",
+      "status": "tested_in_ci",
       "evidence": "verification/rtl/cpu_fault_harness.sv"
     },
     {
@@ -47,7 +47,8 @@
     },
     {
       "id": "cpu_misaligned_branch",
-      "status": "open"
+      "status": "implemented_pending_ci",
+      "evidence": "test_cpu_branch_fault.py"
     },
     {
       "id": "jalr_program",
