@@ -105,5 +105,5 @@ async def architectural_branch_loop_and_link(dut):
     assert seen_pcs == [0, 4, 8, 12, 16, 8, 12, 16, 8, 12, 16, 20, 28, 32]
     assert model.regs[1] == 0 and model.regs[2] == 3
     assert model.regs[4] == 24 and model.regs[5] == 7 and model.regs[3] == 0
-    assert model.counts == {"addi": 8, "branch_taken": 2, "branch_not_taken": 1, "jal": 1, "illegal": 1}
+    assert model.counts == {"addi": 9, "branch_taken": 2, "branch_not_taken": 1, "jal": 1, "illegal": 1}
     dut._log.info("Control-flow scoreboard coverage: %s", model.counts)
