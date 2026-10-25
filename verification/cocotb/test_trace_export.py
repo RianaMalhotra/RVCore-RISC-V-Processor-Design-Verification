@@ -69,7 +69,7 @@ async def export_trace(dut):
     assert cycles[-1].get("halted_after"), "program must halt"
     assert len(cycles) == 8, f"expected 7 instructions and halt, got {len(cycles)}"
     assert registers[7] == 0x1018
-    path = Path(os.getenv("TRACE_OUTPUT", "visualizer/public/trace.json"))
+    path = Path(os.getenv("TRACE_OUTPUT", "visualizer/public/trace.json")).resolve()
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps({"schema_version":1,"source":"Verilator + cocotb RTL simulation","program":"programs/rv32i_integer.hex","cycles":cycles}, indent=2) + "\n")
     dut._log.info("Exported %d observed cycles to %s", len(cycles), path)
