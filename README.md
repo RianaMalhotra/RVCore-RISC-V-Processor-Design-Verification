@@ -1,4 +1,4 @@
-<p align="center"><img src="docs/images/readme-overview-v3.svg" alt="Updated RISC-V SoC architecture, milestone status, timing diagram, operation tables and verification flow" width="100%"></p>
+<p align="center"><img src="docs/images/readme-overview-v4.svg" alt="RVCore CPU architecture with Milestone 10 verification and Milestone 11 scan-chain and BIST overview" width="100%"></p>
 
 > **Visual overview** 
 ---
@@ -12,9 +12,9 @@
 
 **Building and verifying the hardware building blocks of a 32-bit RISC-V processor—entirely in simulation.**
 
-This project is a hands-on exploration of **digital RTL design, processor architecture, and hardware verification**. I implement synthesizable hardware modules in SystemVerilog, test their behavior against Python reference models with cocotb, and run automated regressions through GitHub Actions. The longer-term goal is a small RV32I-based CPU followed by design-for-test (DFT) experiments.
+This project is a hands-on exploration of **digital RTL design, processor architecture, and hardware verification**. I implement synthesizable hardware modules in SystemVerilog, test their behavior against Python reference models with cocotb, and run automated regressions through GitHub Actions. The repository now includes an integrated RV32I-subset CPU, deep simulation regressions, and standalone design-for-test (DFT) experiments.
 
-> **Current scope (October 2026):** A simulation-only, single-cycle RV32I-subset CPU integrates integer arithmetic/shifts/comparisons, branches/jumps, and byte/halfword/word loads and stores. A React/Vite visualizer replays recorded Verilator/cocotb execution. **Milestone 10 simulation verification has expanded to randomized streams, architectural scoreboards, and fault assertions; Milestone 11 adds standalone scan-chain, fault-injection, and LFSR/MISR BIST and signature-based fault-detection experiments.** This is not a complete RV32I-compliant SoC; system instructions, exceptions, interrupts, and external interfaces are not implemented.
+> **Current scope (October 2026):** A simulation-only, single-cycle RV32I-subset CPU integrates integer arithmetic/shifts/comparisons, branches/jumps, and byte/halfword/word loads and stores. A React/Vite visualizer replays recorded Verilator/cocotb execution. **Milestone 10 simulation verification has expanded to randomized streams, architectural scoreboards, and fault assertions; Milestone 11 adds standalone scan-chain, output stuck-at fault injection, and LFSR/MISR BIST experiments; a signature-based BIST fault campaign is merged in PR #30.** This is not a complete RV32I-compliant SoC; system instructions, exceptions, interrupts, and external interfaces are not implemented.
 
 ## At a glance
 
@@ -25,7 +25,7 @@ This project is a hands-on exploration of **digital RTL design, processor archit
 | **Verification** | Directed cocotb unit/integration tests; differential scoreboards, CPU fault assertions, scan-chain tests, modeled stuck-at output fault detection, and LFSR/MISR BIST verification |
 | **Automation** | Verilator lint and simulation, GNU Make, GitHub Actions CI |
 | **Hardware required** | None—runs entirely in software |
-| **Current milestone** | Milestones 1–10 core simulation regression merged; Milestone 11 DFT/DFX experiments underway |
+| **Current milestone** | Milestones 1–10 merged; Milestone 11 scan-chain, output faults, and LFSR/MISR BIST merged; BIST fault campaign merged in PR #30 |
 
 ## Architecture
 
@@ -90,17 +90,23 @@ Rather than relying on visual waveform inspection alone, each module is tested b
 | **Register file** | Reset, immutable `x0`, `x1`/`x31` boundaries, two independent reads, write enable, edge timing, overwrite, reset priority |
 | **Decoder** | Directed and seeded randomized valid R/I instruction encodings, sign extension, register indices, control outputs, and rejection of unsupported encodings |
 | **Register file randomized** | 500 seeded transactions against a software register model, then a 32 × 32 exhaustive read-address sweep |
-| **CI** | RTL lint followed by both cocotb suites on pushes and pull requests |
+| **CI** | RTL lint and automated cocotb module, CPU, scan-chain and BIST regressions on pushes and pull requests |
 
-A passing GitHub Actions run demonstrates that **the checks for that commit passed**; it does **not** establish full ISA compliance, coverage closure, or silicon readiness. The Milestone 10 scoreboard tracks exercised operation categories, **not** formal functional-coverage closure. See [the Milestone 10 verification plan](docs/m10_verification.md) and [the original verification plan](docs/verification_plan.md). See [the verification plan](docs/verification_plan.md) for details.
+A passing GitHub Actions run demonstrates that **the checks for that commit passed**; it does **not** establish full ISA compliance, coverage closure, or silicon readiness. The Milestone 10 scoreboard tracks exercised operation categories, **not** formal functional-coverage closure. See [the Milestone 10 verification plan](docs/m10_verification.md) and [verification plan](docs/verification_plan.md) for details.
+
+## Milestone 10 — CPU verification expansion (merged)
+
+The Milestone 10 pull requests (#17–#26) expanded the simulator regression with seeded differential tests, architectural register/memory scoreboards, control-flow checks (including JAL/JALR), randomized mixed-instruction execution, invalid-access and misalignment negative tests, and fault-related assertions. These tests compare RTL results to expected behavior and exercise selected corner cases; they do **not** establish full RV32I compliance or measured functional-coverage closure.
+
+Run `make test-cpu-arch-scoreboard`, `make test-cpu-random-stream`, or `make test` for the full regression. The remaining coverage-closure work is tracked in [issue #4](https://github.com/RianaMalhotra/RVCore-RISC-V-Processor-Design-Verification/issues/4).
 
 ## DFT/DFX experiments (Milestone 11)
 
 - [Parameterized scan chain](rtl/dft/scan_chain.sv): 8-bit default with functional capture, serial shift, scan-out, and synchronous reset; verified by `make test-scan-chain`.
 - [Scan stuck-at fault model](rtl/dft/scan_fault_harness.sv): selectable bit and stuck-at-0/1 on the **observable output**. The test sensitizes and detects all 16 modeled output faults (8 positions × 2 polarities), and checks non-sensitizing patterns. Run `make test-scan-stuck-at`.
 - [LFSR/MISR BIST engine](rtl/dft/bist_engine.sv): deterministic 8-bit pseudo-random patterns and response-signature compaction against a toy combinational circuit, checked cycle-by-cycle with an independent Python model. Run `make test-bist`.
-- [BIST signature fault detection](rtl/dft/bist_fault_engine.sv): injects 16 response stuck-at-0/1 fault cases into a toy circuit, checks MISR signatures against a reference model, and reports detected versus aliased faults. Run `make test-bist-faults`.
-- [BIST fault detection notes](docs/m11_bist_fault_detection.md) · [BIST details and limitations](docs/m11_bist.md) · [Fault model and limitations](docs/m11_fault_injection.md) · [Scan-chain design notes](docs/m11_scan_chain.md).
+- [BIST response fault campaign (PR #30)](https://github.com/RianaMalhotra/RVCore-RISC-V-Processor-Design-Verification/pull/30): merged stuck-at response fault injection with MISR detection/alias reporting.
+- [BIST details and limitations](docs/m11_bist.md) · [Fault model and limitations](docs/m11_fault_injection.md) · [Scan-chain design notes](docs/m11_scan_chain.md).
 
 These are standalone educational experiments. The CPU is **not scan-inserted**, and modeled output-fault detection and toy-circuit BIST are **not** equivalent to silicon fault coverage, internal stuck-at coverage, CPU BIST integration, or ATPG qualification.
 
@@ -138,7 +144,7 @@ make test-rv32i-differential # M10 seeded reference-model scoreboard
 make test-scan-chain       # M11 functional capture and serial scan
 make test-scan-stuck-at    # M11 modeled stuck-at-0/1 fault detection
 make test-bist           # M11 LFSR test patterns and MISR signatures
-make test-bist-faults    # M11 response stuck-at fault signature detection
+make test-bist-faults    # M11 modeled response faults and MISR alias reporting
 make trace               # Export the RTL-driven visualizer trace
 ```
 
@@ -176,17 +182,17 @@ riscv-soc-verification/
 - [x] **Milestone 7 — Data memory:** Byte/halfword/word loads and stores; CI verified.
 - [x] **Milestone 8 — RV32I integer execution:** Shifts, comparisons, LUI/AUIPC, and unified CPU integration (subset limitations noted below).
 - [x] **Milestone 9 — [Interactive CPU visualizer](https://github.com/RianaMalhotra/RVCore-RISC-V-Processor-Design-Verification/issues/14):** Recorded RTL execution traces, React/Vite step-through datapath and register viewer; richer memory inspection remains future work.
-- [ ] **Milestone 10 — Verification depth (in progress, [PR #17](https://github.com/RianaMalhotra/RVCore-RISC-V-Processor-Design-Verification/pull/17)):** Seeded integer differential scoreboard, operation stimulus counts, negative tests; CPU-level scoreboard, assertions and coverage closure still planned.
-- [ ] **Milestone 11 — DFT/DFX exploration:** Scan chains, BIST and fault-injection experiments.
+- [x] **Milestone 10 — Verification depth (PRs #17–#26 merged):** Seeded integer and mixed-instruction differential tests, architectural scoreboards, control-flow checks and fault assertions. Formal functional-coverage closure remains tracked separately in issue #4.
+- [ ] **Milestone 11 — DFT/DFX exploration (in progress):** Scan-chain capture/shift, modeled output stuck-at faults and LFSR/MISR BIST merged (#27–#29); signature-based BIST fault campaign merged in PR #30. Memory BIST remains issue #6.
 - [ ] **Milestone 12 — Final validation and demo:** End-to-end demonstration, reproducible instructions and portfolio documentation.
 
-**Status: 9 of 12 milestones merged.** Milestone 10 is under review; the visualizer replays measured simulator traces rather than emulating the CPU in JavaScript.
+**Status: Milestones 1–10 implemented and merged; Milestone 11 partially implemented.** The visualizer replays measured simulator traces rather than emulating the CPU in JavaScript.
 ## Engineering decisions and limitations
 
 - **Modular development:** Verify individual blocks before integrating a processor, so failures are easier to isolate.
 - **Deterministic random tests:** Fixed seeds make failures reproducible.
 - **Architectural vs implementation behavior:** `x0` semantics follow RV32I; clearing the register file on reset is a deliberate implementation choice.
-- **Scope honesty:** The integrated CPU and trace visualizer run in simulation; no FPGA deployment, ISA compliance certification, functional-coverage closure, or scan/BIST implementation is claimed.
+- **Scope honesty:** The integrated CPU and trace visualizer run in simulation; no FPGA deployment, ISA compliance certification, functional-coverage closure, or CPU-integrated scan/BIST implementation is claimed.
 
 ## Author
 
