@@ -28,5 +28,5 @@ for index, event in enumerate(cycles):
 assert sum(c["memory_store"] and not c["illegal"] for c in cycles) == 3
 assert sum(c["memory_load"] and not c["illegal"] for c in cycles) == 5
 assert cycles[-1]["illegal"] and cycles[-1]["halted_after"]
-assert mem[64:68] == [0x80, 0xFF, 0xFF, 0xFF]
+assert mem[64:72] == [0x80, 0x00, 0x80, 0xFF, 0x80, 0xFF, 0xFF, 0xFF]
 print("11-cycle RTL load/store trace: register/memory replay and halt verified")
