@@ -1,0 +1,65 @@
+{
+  "milestone": 10,
+  "kind": "scenario-and-test-inventory",
+  "note": "Evidence mapping only. Not a simulator-measured functional coverage percentage or formal proof.",
+  "objectives": [
+    {
+      "id": "integer_rv32i",
+      "status": "tested",
+      "evidence": "test_rv32i_differential.py",
+      "samples": 3801
+    },
+    {
+      "id": "illegal_integer",
+      "status": "tested",
+      "evidence": "test_rv32i_differential.py",
+      "samples": 64
+    },
+    {
+      "id": "cpu_load_store",
+      "status": "tested",
+      "evidence": "test_cpu_arch_scoreboard.py"
+    },
+    {
+      "id": "branch_loop_jal",
+      "status": "tested",
+      "evidence": "test_cpu_control_scoreboard.py"
+    },
+    {
+      "id": "memory_rejected_stores",
+      "status": "tested",
+      "evidence": "test_data_memory_fault_invariants.py",
+      "scenarios": 7
+    },
+    {
+      "id": "cpu_misaligned_load",
+      "status": "tested",
+      "evidence": "test_cpu_fault_assertions.py"
+    },
+    {
+      "id": "sva_safety_properties",
+      "status": "implemented_pending_ci",
+      "evidence": "verification/rtl/cpu_fault_harness.sv"
+    },
+    {
+      "id": "cpu_misaligned_store",
+      "status": "open"
+    },
+    {
+      "id": "cpu_misaligned_branch",
+      "status": "open"
+    },
+    {
+      "id": "jalr_program",
+      "status": "open"
+    },
+    {
+      "id": "randomized_instruction_stream",
+      "status": "open"
+    },
+    {
+      "id": "formal_proof",
+      "status": "open"
+    }
+  ]
+}
