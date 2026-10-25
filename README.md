@@ -110,6 +110,8 @@ Run `make test-cpu-arch-scoreboard`, `make test-cpu-random-stream`, or `make tes
 
 These are standalone educational experiments. The CPU is **not scan-inserted**, and modeled output-fault detection and toy-circuit BIST are **not** equivalent to silicon fault coverage, internal stuck-at coverage, CPU BIST integration, or ATPG qualification.
 
+- [Memory BIST prototype](docs/m11_memory_bist.md) (PR pending): standalone March-style 8×8 memory controller, 24 read comparisons per run, and 128 modeled stuck-at observation faults. Run `make test-memory-bist`. CPU memory integration and physical defect coverage are not claimed.
+
 ## Technology stack
 
 | Tool | Role in this project |
@@ -145,6 +147,7 @@ make test-scan-chain       # M11 functional capture and serial scan
 make test-scan-stuck-at    # M11 modeled stuck-at-0/1 fault detection
 make test-bist           # M11 LFSR test patterns and MISR signatures
 make test-bist-faults    # M11 modeled response faults and MISR alias reporting
+make test-memory-bist    # M11 March-style memory test and fault campaign
 make trace               # Export the RTL-driven visualizer trace
 ```
 
@@ -183,7 +186,7 @@ riscv-soc-verification/
 - [x] **Milestone 8 — RV32I integer execution:** Shifts, comparisons, LUI/AUIPC, and unified CPU integration (subset limitations noted below).
 - [x] **Milestone 9 — [Interactive CPU visualizer](https://github.com/RianaMalhotra/RVCore-RISC-V-Processor-Design-Verification/issues/14):** Recorded RTL execution traces, React/Vite step-through datapath and register viewer; richer memory inspection remains future work.
 - [x] **Milestone 10 — Verification depth (PRs #17–#26 merged):** Seeded integer and mixed-instruction differential tests, architectural scoreboards, control-flow checks and fault assertions. Formal functional-coverage closure remains tracked separately in issue #4.
-- [ ] **Milestone 11 — DFT/DFX exploration (in progress):** Scan-chain capture/shift, modeled output stuck-at faults and LFSR/MISR BIST merged (#27–#29); signature-based BIST fault campaign merged in PR #30. Memory BIST remains issue #6.
+- [ ] **Milestone 11 — DFT/DFX exploration (in progress):** Scan-chain capture/shift, modeled output stuck-at faults and LFSR/MISR BIST merged (#27–#29); signature-based BIST fault campaign merged in PR #30. Memory BIST prototype is in progress for issue #6.
 - [ ] **Milestone 12 — Final validation and demo:** End-to-end demonstration, reproducible instructions and portfolio documentation.
 
 **Status: Milestones 1–10 implemented and merged; Milestone 11 partially implemented.** The visualizer replays measured simulator traces rather than emulating the CPU in JavaScript.
