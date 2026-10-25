@@ -18,3 +18,25 @@ jobs:
         run: make lint
       - name: Verify ALU
         run: make test
+      - name: Generate and verify RTL execution trace
+        run: make trace
+      - name: Validate trace schema
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path("visualizer/public/trace.json")
+          data = json.loads(p.read_text())
+          assert data["schema_version"] == 1
+          assert len(data["cycles"]) == 8
+          assert data["cycles"][-1]["halted_after"]
+          assert data["cycles"][6]["registers_after"][7] == 0x1018
+          PY
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Build visualization
+        run: |
+          cd visualizer
+          npm install --no-audit --no-fund
+          npm run build
