@@ -11,6 +11,7 @@ regs = [0] * 32
 for i, event in enumerate(cycles):
     assert event["cycle"] == i + 1
     assert event["pc"] == i * 4
+    assert isinstance(event["alu_result"], int)
     assert event["instruction"].startswith("0x") and len(event["instruction"]) == 10
     assert len(event["registers_after"]) == 32
     assert event["registers_after"][0] == 0
