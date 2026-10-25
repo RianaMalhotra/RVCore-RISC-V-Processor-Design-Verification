@@ -6,40 +6,40 @@ export PYTHONPATH := $(abspath verification/cocotb):$(PYTHONPATH)
 test: test-rv32i-system test-rv32i-integer test-alu test-register-file test-decoder test-cpu test-system test-control-flow test-control-system test-data-memory test-memory-system
 
 trace:
-	$(MAKE) -f $(shell cocotb-config --makefiles)/Makefile.sim SIM=$(SIM) TOPLEVEL_LANG=$(TOPLEVEL_LANG) VERILOG_SOURCES="$(abspath rtl/core/alu.sv) $(abspath rtl/core/register_file.sv) $(abspath rtl/core/instruction_decoder.sv) $(abspath rtl/core/instruction_memory.sv) $(abspath rtl/core/cpu_control_flow.sv) $(abspath rtl/core/data_memory.sv) $(abspath rtl/core/rv32i_integer.sv) $(abspath rtl/core/cpu_system_memory.sv) $(abspath rtl/core/cpu_system_rv32i.sv)" TOPLEVEL=cpu_system_rv32i COCOTB_TEST_MODULES=test_trace_export TRACE_OUTPUT=$(abspath visualizer/public/trace.json) SIM_BUILD=sim_build/rv32i_trace
+	$(MAKE) -f $(shell cocotb-config --makefiles)/Makefile.sim SIM=$(SIM) TOPLEVEL_LANG=$(TOPLEVEL_LANG) VERILOG_SOURCES="$(abspath rtl/core/alu.sv) $(abspath rtl/core/register_file.sv) $(abspath rtl/core/instruction_decoder.sv) $(abspath rtl/core/instruction_memory.sv) $(abspath rtl/core/cpu_control_flow.sv) $(abspath rtl/core/data_memory.sv) $(abspath rtl/core/rv32i_integer.sv) $(abspath rtl/core/cpu_system_memory.sv) $(abspath rtl/core/cpu_system_rv32i.sv)" TOPLEVEL=cpu_system_rv32i COCOTB_TEST_MODULES=test_trace_export MODULE=test_trace_export TRACE_OUTPUT=$(abspath visualizer/public/trace.json) SIM_BUILD=sim_build/rv32i_trace
 
 test-rv32i-system:
-	$(MAKE) -f $(shell cocotb-config --makefiles)/Makefile.sim SIM=$(SIM) TOPLEVEL_LANG=$(TOPLEVEL_LANG) VERILOG_SOURCES="$(abspath rtl/core/alu.sv) $(abspath rtl/core/register_file.sv) $(abspath rtl/core/instruction_decoder.sv) $(abspath rtl/core/instruction_memory.sv) $(abspath rtl/core/cpu_control_flow.sv) $(abspath rtl/core/data_memory.sv) $(abspath rtl/core/rv32i_integer.sv) $(abspath rtl/core/cpu_system_memory.sv) $(abspath rtl/core/cpu_system_rv32i.sv)" TOPLEVEL=cpu_system_rv32i COCOTB_TEST_MODULES=test_cpu_system_rv32i SIM_BUILD=sim_build/rv32i_system
+	$(MAKE) -f $(shell cocotb-config --makefiles)/Makefile.sim SIM=$(SIM) TOPLEVEL_LANG=$(TOPLEVEL_LANG) VERILOG_SOURCES="$(abspath rtl/core/alu.sv) $(abspath rtl/core/register_file.sv) $(abspath rtl/core/instruction_decoder.sv) $(abspath rtl/core/instruction_memory.sv) $(abspath rtl/core/cpu_control_flow.sv) $(abspath rtl/core/data_memory.sv) $(abspath rtl/core/rv32i_integer.sv) $(abspath rtl/core/cpu_system_memory.sv) $(abspath rtl/core/cpu_system_rv32i.sv)" TOPLEVEL=cpu_system_rv32i COCOTB_TEST_MODULES=test_cpu_system_rv32i MODULE=test_cpu_system_rv32i SIM_BUILD=sim_build/rv32i_system
 
 test-rv32i-integer:
-	$(MAKE) -f $(shell cocotb-config --makefiles)/Makefile.sim SIM=$(SIM) TOPLEVEL_LANG=$(TOPLEVEL_LANG) VERILOG_SOURCES="$(abspath rtl/core/rv32i_integer.sv)" TOPLEVEL=rv32i_integer COCOTB_TEST_MODULES=test_rv32i_integer SIM_BUILD=sim_build/rv32i_integer
+	$(MAKE) -f $(shell cocotb-config --makefiles)/Makefile.sim SIM=$(SIM) TOPLEVEL_LANG=$(TOPLEVEL_LANG) VERILOG_SOURCES="$(abspath rtl/core/rv32i_integer.sv)" TOPLEVEL=rv32i_integer COCOTB_TEST_MODULES=test_rv32i_integer MODULE=test_rv32i_integer SIM_BUILD=sim_build/rv32i_integer
 
 test-alu:
-	$(MAKE) -f $(shell cocotb-config --makefiles)/Makefile.sim SIM=$(SIM) TOPLEVEL_LANG=$(TOPLEVEL_LANG) VERILOG_SOURCES="$(abspath rtl/core/alu.sv)" TOPLEVEL=alu COCOTB_TEST_MODULES=test_alu SIM_BUILD=sim_build/alu
+	$(MAKE) -f $(shell cocotb-config --makefiles)/Makefile.sim SIM=$(SIM) TOPLEVEL_LANG=$(TOPLEVEL_LANG) VERILOG_SOURCES="$(abspath rtl/core/alu.sv)" TOPLEVEL=alu COCOTB_TEST_MODULES=test_alu MODULE=test_alu SIM_BUILD=sim_build/alu
 
 test-register-file:
-	$(MAKE) -f $(shell cocotb-config --makefiles)/Makefile.sim SIM=$(SIM) TOPLEVEL_LANG=$(TOPLEVEL_LANG) VERILOG_SOURCES="$(abspath rtl/core/register_file.sv)" TOPLEVEL=register_file COCOTB_TEST_MODULES=test_register_file SIM_BUILD=sim_build/register_file
+	$(MAKE) -f $(shell cocotb-config --makefiles)/Makefile.sim SIM=$(SIM) TOPLEVEL_LANG=$(TOPLEVEL_LANG) VERILOG_SOURCES="$(abspath rtl/core/register_file.sv)" TOPLEVEL=register_file COCOTB_TEST_MODULES=test_register_file MODULE=test_register_file SIM_BUILD=sim_build/register_file
 
 test-decoder:
-	$(MAKE) -f $(shell cocotb-config --makefiles)/Makefile.sim SIM=$(SIM) TOPLEVEL_LANG=$(TOPLEVEL_LANG) VERILOG_SOURCES="$(abspath rtl/core/instruction_decoder.sv)" TOPLEVEL=instruction_decoder COCOTB_TEST_MODULES=test_instruction_decoder SIM_BUILD=sim_build/decoder
+	$(MAKE) -f $(shell cocotb-config --makefiles)/Makefile.sim SIM=$(SIM) TOPLEVEL_LANG=$(TOPLEVEL_LANG) VERILOG_SOURCES="$(abspath rtl/core/instruction_decoder.sv)" TOPLEVEL=instruction_decoder COCOTB_TEST_MODULES=test_instruction_decoder MODULE=test_instruction_decoder SIM_BUILD=sim_build/decoder
 
 test-cpu:
-	$(MAKE) -f $(shell cocotb-config --makefiles)/Makefile.sim SIM=$(SIM) TOPLEVEL_LANG=$(TOPLEVEL_LANG) VERILOG_SOURCES="$(abspath rtl/core/alu.sv) $(abspath rtl/core/register_file.sv) $(abspath rtl/core/instruction_decoder.sv) $(abspath rtl/core/cpu_datapath.sv)" TOPLEVEL=cpu_datapath COCOTB_TEST_MODULES=test_cpu_datapath SIM_BUILD=sim_build/cpu
+	$(MAKE) -f $(shell cocotb-config --makefiles)/Makefile.sim SIM=$(SIM) TOPLEVEL_LANG=$(TOPLEVEL_LANG) VERILOG_SOURCES="$(abspath rtl/core/alu.sv) $(abspath rtl/core/register_file.sv) $(abspath rtl/core/instruction_decoder.sv) $(abspath rtl/core/cpu_datapath.sv)" TOPLEVEL=cpu_datapath COCOTB_TEST_MODULES=test_cpu_datapath MODULE=test_cpu_datapath SIM_BUILD=sim_build/cpu
 
 test-system:
-	$(MAKE) -f $(shell cocotb-config --makefiles)/Makefile.sim SIM=$(SIM) TOPLEVEL_LANG=$(TOPLEVEL_LANG) VERILOG_SOURCES="$(abspath rtl/core/alu.sv) $(abspath rtl/core/register_file.sv) $(abspath rtl/core/instruction_decoder.sv) $(abspath rtl/core/cpu_datapath.sv) $(abspath rtl/core/instruction_memory.sv) $(abspath rtl/core/cpu_system.sv)" TOPLEVEL=cpu_system COCOTB_TEST_MODULES=test_cpu_system SIM_BUILD=sim_build/system
+	$(MAKE) -f $(shell cocotb-config --makefiles)/Makefile.sim SIM=$(SIM) TOPLEVEL_LANG=$(TOPLEVEL_LANG) VERILOG_SOURCES="$(abspath rtl/core/alu.sv) $(abspath rtl/core/register_file.sv) $(abspath rtl/core/instruction_decoder.sv) $(abspath rtl/core/cpu_datapath.sv) $(abspath rtl/core/instruction_memory.sv) $(abspath rtl/core/cpu_system.sv)" TOPLEVEL=cpu_system COCOTB_TEST_MODULES=test_cpu_system MODULE=test_cpu_system SIM_BUILD=sim_build/system
 
 test-control-flow:
-	$(MAKE) -f $(shell cocotb-config --makefiles)/Makefile.sim SIM=$(SIM) TOPLEVEL_LANG=$(TOPLEVEL_LANG) VERILOG_SOURCES="$(abspath rtl/core/cpu_control_flow.sv)" TOPLEVEL=cpu_control_flow COCOTB_TEST_MODULES=test_cpu_control_flow SIM_BUILD=sim_build/control_flow
+	$(MAKE) -f $(shell cocotb-config --makefiles)/Makefile.sim SIM=$(SIM) TOPLEVEL_LANG=$(TOPLEVEL_LANG) VERILOG_SOURCES="$(abspath rtl/core/cpu_control_flow.sv)" TOPLEVEL=cpu_control_flow COCOTB_TEST_MODULES=test_cpu_control_flow MODULE=test_cpu_control_flow SIM_BUILD=sim_build/control_flow
 
 test-control-system:
-	$(MAKE) -f $(shell cocotb-config --makefiles)/Makefile.sim SIM=$(SIM) TOPLEVEL_LANG=$(TOPLEVEL_LANG) VERILOG_SOURCES="$(abspath rtl/core/alu.sv) $(abspath rtl/core/register_file.sv) $(abspath rtl/core/instruction_decoder.sv) $(abspath rtl/core/instruction_memory.sv) $(abspath rtl/core/cpu_control_flow.sv) $(abspath rtl/core/cpu_system_control.sv)" TOPLEVEL=cpu_system_control COCOTB_TEST_MODULES=test_cpu_system_control SIM_BUILD=sim_build/control_system
+	$(MAKE) -f $(shell cocotb-config --makefiles)/Makefile.sim SIM=$(SIM) TOPLEVEL_LANG=$(TOPLEVEL_LANG) VERILOG_SOURCES="$(abspath rtl/core/alu.sv) $(abspath rtl/core/register_file.sv) $(abspath rtl/core/instruction_decoder.sv) $(abspath rtl/core/instruction_memory.sv) $(abspath rtl/core/cpu_control_flow.sv) $(abspath rtl/core/cpu_system_control.sv)" TOPLEVEL=cpu_system_control COCOTB_TEST_MODULES=test_cpu_system_control MODULE=test_cpu_system_control SIM_BUILD=sim_build/control_system
 
 test-data-memory:
-	$(MAKE) -f $(shell cocotb-config --makefiles)/Makefile.sim SIM=$(SIM) TOPLEVEL_LANG=$(TOPLEVEL_LANG) VERILOG_SOURCES="$(abspath rtl/core/data_memory.sv)" TOPLEVEL=data_memory COCOTB_TEST_MODULES=test_data_memory SIM_BUILD=sim_build/data_memory
+	$(MAKE) -f $(shell cocotb-config --makefiles)/Makefile.sim SIM=$(SIM) TOPLEVEL_LANG=$(TOPLEVEL_LANG) VERILOG_SOURCES="$(abspath rtl/core/data_memory.sv)" TOPLEVEL=data_memory COCOTB_TEST_MODULES=test_data_memory MODULE=test_data_memory SIM_BUILD=sim_build/data_memory
 
 test-memory-system:
-	$(MAKE) -f $(shell cocotb-config --makefiles)/Makefile.sim SIM=$(SIM) TOPLEVEL_LANG=$(TOPLEVEL_LANG) VERILOG_SOURCES="$(abspath rtl/core/alu.sv) $(abspath rtl/core/register_file.sv) $(abspath rtl/core/instruction_decoder.sv) $(abspath rtl/core/instruction_memory.sv) $(abspath rtl/core/cpu_control_flow.sv) $(abspath rtl/core/data_memory.sv) $(abspath rtl/core/rv32i_integer.sv) $(abspath rtl/core/cpu_system_memory.sv)" TOPLEVEL=cpu_system_memory COCOTB_TEST_MODULES=test_cpu_system_memory SIM_BUILD=sim_build/memory_system
+	$(MAKE) -f $(shell cocotb-config --makefiles)/Makefile.sim SIM=$(SIM) TOPLEVEL_LANG=$(TOPLEVEL_LANG) VERILOG_SOURCES="$(abspath rtl/core/alu.sv) $(abspath rtl/core/register_file.sv) $(abspath rtl/core/instruction_decoder.sv) $(abspath rtl/core/instruction_memory.sv) $(abspath rtl/core/cpu_control_flow.sv) $(abspath rtl/core/data_memory.sv) $(abspath rtl/core/rv32i_integer.sv) $(abspath rtl/core/cpu_system_memory.sv)" TOPLEVEL=cpu_system_memory COCOTB_TEST_MODULES=test_cpu_system_memory MODULE=test_cpu_system_memory SIM_BUILD=sim_build/memory_system
 
 lint:
 	verilator --lint-only -Wall -Wno-fatal rtl/core/rv32i_integer.sv
