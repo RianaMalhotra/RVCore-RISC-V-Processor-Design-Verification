@@ -1,13 +1,12 @@
 // Expose existing CPU architectural signals without modifying execution behavior.
 module cpu_system_load_store_trace (
     input logic clk, rst,
-    output logic [31:0] pc, instruction, write_data,
+    output logic [31:0] pc, instruction, write_data, alu_result,
     output logic [31:0] rs1_value, rs2_value, memory_address, memory_read, memory_write_data,
     output logic [4:0] rd_index,
     output logic register_write, memory_load, memory_store, memory_fault,
     output logic illegal, halted
 );
-    logic [31:0] alu_result;
     cpu_system_memory #(.IMEM_FILE("programs/load_store.hex")) core (
         .clk(clk), .rst(rst), .pc(pc), .instruction(instruction),
         .alu_result(alu_result), .illegal(illegal), .halted(halted)
