@@ -33,6 +33,9 @@ The seeded RV32I differential regression produces a machine-readable [coverage r
 
 ## Visualizer verification
 
+**Two RTL simulation programs:** `make trace` generates the eight-cycle integer trace; `make trace-load-store` generates the eleven-cycle byte/halfword/word load/store trace. Launch the UI with `cd visualizer && npm install && npm run dev`, then choose a program. The memory view replays bytes reconstructed from RTL-observed successful store events, not a direct dump of hidden RAM. CI checks both trace contracts and builds the UI.
+
+
 Run `make trace && python3 verification/check_trace.py`, then `cd visualizer && npm install && npm run dev`. The [trace validation guide](docs/visualizer_validation.md) explains what CI checks and which 11-instruction load/store visualizer acceptance criteria remain open. This is an observed RTL **simulation trace**, not hardware execution.
 
 ## Architecture
