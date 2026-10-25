@@ -25,3 +25,11 @@ The test checks **combinational integer execution only**. It does not establish 
 ## Next verification increments
 
 Add a CPU-level instruction-stream scoreboard with architectural register and memory state; cover branches, jumps, load/store alignment and faults; add assertion-based control invariants; then produce machine-readable functional-coverage summaries and a documented closure matrix.
+
+## CPU-level architectural scoreboard (second increment)
+
+The `test-cpu-arch-scoreboard` target runs the stored `programs/load_store.hex` program against an independent instruction decoder and Python model of the 32 architectural registers, 256-byte little-endian memory, PC progression, and halt behavior. It checks every fetched instruction, the pre- and post-clock PC, illegal/halt signals, write enables, and expected register writeback values. Loads after stores indirectly verify modeled memory contents. It deliberately does **not** rely on Verilator-private register or memory arrays, and does **not** claim to directly inspect every register/memory location. This first CPU-level scoreboard covers the existing fixed load/store program; randomized instruction streams, branch/jump sequences, misalignment fault scenarios, and architectural assertions remain planned.
+
+```bash
+make test-cpu-arch-scoreboard
+```
