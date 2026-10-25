@@ -45,4 +45,4 @@ lint:
 	verilator --lint-only -Wall -Wno-fatal --top-module cpu_control_flow rtl/core/cpu_control_flow.sv
 	verilator --lint-only -Wall -Wno-fatal --top-module cpu_system_control rtl/core/alu.sv rtl/core/register_file.sv rtl/core/instruction_decoder.sv rtl/core/instruction_memory.sv rtl/core/cpu_control_flow.sv rtl/core/cpu_system_control.sv
 	verilator --lint-only -Wall -Wno-fatal --top-module data_memory rtl/core/data_memory.sv
-	verilator --lint-only -Wall -Wno-fatal --top-module cpu_system_memory rtl/core/alu.sv rtl/core/register_file.sv rtl/core/instruction_decoder.sv rtl/core/instruction_memory.sv rtl/core/cpu_control_flow.sv rtl/core/data_memory.sv rtl/core/cpu_system_memory.sv
+	verilator --lint-only -Wall -Wno-fatal --top-module cpu_system_memory rtl/core/alu.sv rtl/core/register_file.sv rtl/core/instruction_decoder.sv rtl/core/instruction_memory.sv rtl/core/cpu_control_flow.sv rtl/core/data_memory.sv rtl/core/rv32i_integer.sv rtl/core/cpu_system_memory.sv
