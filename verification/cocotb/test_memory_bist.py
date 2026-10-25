@@ -23,7 +23,7 @@ async def run_bist(dut, fault_enable, address=0, bit=0, value=0):
         assert False, "MBIST did not complete"
     assert int(dut.busy.value) == 0
     assert int(dut.comparisons.value) == 3 * DEPTH
-    return int(dut.pass.value), int(dut.errors.value)
+    return int(dut._id('pass', extended=False).value), int(dut.errors.value)
 
 @cocotb.test()
 async def march_memory_bist_fault_campaign(dut):
