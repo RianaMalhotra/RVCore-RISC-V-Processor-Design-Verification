@@ -53,12 +53,15 @@
     },
     {
       "id": "jalr_program",
-      "status": "implemented_pending_ci",
+      "status": "tested_in_ci",
       "evidence": "test_cpu_jalr_end_to_end.py"
     },
     {
       "id": "randomized_instruction_stream",
-      "status": "open"
+      "status": "implemented_pending_ci",
+      "evidence": "test_cpu_random_stream.py",
+      "seed": 20261025,
+      "instructions": 46
     },
     {
       "id": "formal_proof",
